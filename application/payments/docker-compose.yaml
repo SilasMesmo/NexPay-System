@@ -1,0 +1,19 @@
+# Para testar localmente.
+services:
+  postgres:
+    image: postgres:18
+    container_name: nexpay-payments-postgres
+
+    environment:
+      POSTGRES_DB: nexpay
+      POSTGRES_USER: nexpay
+      POSTGRES_PASSWORD: nexpay
+
+    ports:
+      - "5432:5432"
+
+    volumes:
+      - postgres_data:/var/lib/postgresql
+
+volumes:
+  postgres_data:

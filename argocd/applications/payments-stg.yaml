@@ -1,0 +1,28 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: nexpay-payments-stg
+  namespace: argocd
+  labels:
+    app.kubernetes.io/name: payments
+    app.kubernetes.io/part-of: nexpay
+    environment: stg
+spec:
+  project: default
+
+  source:
+    repoURL: https://github.com/SilasMesmo/NexPay-System.git
+    targetRevision: main
+    path: k8s/overlays/stg
+
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: nexpay-stg
+
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+
+    syncOptions:
+      - CreateNamespace=true

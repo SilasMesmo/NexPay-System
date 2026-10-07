@@ -1,0 +1,75 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: payments
+  labels:
+    app.kubernetes.io/name: payments
+    app.kubernetes.io/component: backend
+    app.kubernetes.io/part-of: nexpay
+spec:
+  replicas: 2
+
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: payments
+
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: payments
+        app.kubernetes.io/component: backend
+        app.kubernetes.io/part-of: nexpay
+
+    spec:
+      serviceAccountName: sa-pod-perform
+      containers:
+        - name: payments
+          image: nexpay-payments:latest
+
+          ports:
+            - name: http
+              containerPort: 8000
+              protocol: TCP
+
+          env:
+            - name: ENVIRONMENT
+              value: "dev"
+
+            - name: DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: nexpay-payments-secrets
+                  key: DATABASE_URL
+
+          readinessProbe:
+            httpGet:
+              path: /ready
+              port: http
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            timeoutSeconds: 3
+            failureThreshold: 3
+
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: http
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            timeoutSeconds: 3
+            failureThreshold: 3
+
+          resources:
+            requests:
+              cpu: 250m
+              memory: 256Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi
+
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: false
+            capabilities:
+              drop:
+                - ALL

@@ -1,0 +1,3045 @@
+module.vpc.data.aws_region.sqs_point: Reading...
+module.vpc.data.aws_region.sqs_point: Read complete after 0s [id=us-east-1]
+
+Terraform used the selected providers to generate the following execution
+plan. Resource actions are indicated with the following symbols:
+  + create
+ <= read (data resources)
+
+Terraform will perform the following actions:
+
+  # helm_release.aws_load_balancer_controller will be created
+  + resource "helm_release" "aws_load_balancer_controller" {
+      + atomic                     = false
+      + chart                      = "aws-load-balancer-controller"
+      + cleanup_on_fail            = false
+      + create_namespace           = false
+      + dependency_update          = false
+      + disable_crd_hooks          = false
+      + disable_openapi_validation = false
+      + disable_webhooks           = false
+      + force_update               = false
+      + id                         = (known after apply)
+      + lint                       = false
+      + max_history                = 0
+      + metadata                   = (known after apply)
+      + name                       = "aws-load-balancer-controller"
+      + namespace                  = "kube-system"
+      + pass_credentials           = false
+      + recreate_pods              = false
+      + render_subchart_notes      = true
+      + replace                    = false
+      + repository                 = "https://aws.github.io/eks-charts"
+      + reset_values               = false
+      + reuse_values               = false
+      + set                        = [
+          + {
+              + name  = "clusterName"
+              + value = "nexpay-dev-eks"
+                # (1 unchanged attribute hidden)
+            },
+          + {
+              + name  = "region"
+              + value = "us-east-1"
+                # (1 unchanged attribute hidden)
+            },
+          + {
+              + name  = "vpcId"
+              + value = (known after apply)
+                # (1 unchanged attribute hidden)
+            },
+        ]
+      + set_wo                     = (write-only attribute)
+      + skip_crds                  = false
+      + status                     = "deployed"
+      + take_ownership             = false
+      + timeout                    = 300
+      + upgrade_install            = false
+      + values                     = [
+          + <<-EOT
+                replicaCount: 2
+                
+                serviceAccount:
+                  create: true
+                  name: aws-load-balancer-controller
+                
+                ingressClass: alb
+                
+                createIngressClassResource: true
+                
+                enableServiceMutatorWebhook: true
+            EOT,
+        ]
+      + verify                     = false
+      + version                    = "1.14.0"
+      + wait                       = true
+      + wait_for_jobs              = false
+    }
+
+  # module.argocd.helm_release.argocd will be created
+  + resource "helm_release" "argocd" {
+      + atomic                     = true
+      + chart                      = "argo-cd"
+      + cleanup_on_fail            = false
+      + create_namespace           = true
+      + dependency_update          = false
+      + disable_crd_hooks          = false
+      + disable_openapi_validation = false
+      + disable_webhooks           = false
+      + force_update               = false
+      + id                         = (known after apply)
+      + lint                       = false
+      + max_history                = 0
+      + metadata                   = (known after apply)
+      + name                       = "argocd"
+      + namespace                  = "argocd"
+      + pass_credentials           = false
+      + recreate_pods              = false
+      + render_subchart_notes      = true
+      + replace                    = false
+      + repository                 = "https://argoproj.github.io/argo-helm"
+      + reset_values               = false
+      + reuse_values               = false
+      + set_wo                     = (write-only attribute)
+      + skip_crds                  = false
+      + status                     = "deployed"
+      + take_ownership             = false
+      + timeout                    = 900
+      + upgrade_install            = false
+      + verify                     = false
+      + version                    = "10.9.2"
+      + wait                       = true
+      + wait_for_jobs              = false
+    }
+
+  # module.cache.aws_elasticache_replication_group.nexpay_redis will be created
+  + resource "aws_elasticache_replication_group" "nexpay_redis" {
+      + apply_immediately              = (known after apply)
+      + arn                            = (known after apply)
+      + at_rest_encryption_enabled     = "true"
+      + auth_token_wo                  = (write-only attribute)
+      + auto_minor_version_upgrade     = (known after apply)
+      + automatic_failover_enabled     = true
+      + cluster_enabled                = (known after apply)
+      + cluster_mode                   = (known after apply)
+      + configuration_endpoint_address = (known after apply)
+      + data_tiering_enabled           = (known after apply)
+      + description                    = "NexPay Redis cache replication group"
+      + durability                     = (known after apply)
+      + engine                         = "redis"
+      + engine_version                 = "7.1"
+      + engine_version_actual          = (known after apply)
+      + global_replication_group_id    = (known after apply)
+      + id                             = (known after apply)
+      + ip_discovery                   = (known after apply)
+      + maintenance_window             = (known after apply)
+      + member_clusters                = (known after apply)
+      + multi_az_enabled               = true
+      + network_type                   = (known after apply)
+      + node_type                      = "cache.t4g.micro"
+      + num_cache_clusters             = 2
+      + num_node_groups                = (known after apply)
+      + parameter_group_name           = (known after apply)
+      + port                           = 6379
+      + primary_endpoint_address       = (known after apply)
+      + reader_endpoint_address        = (known after apply)
+      + region                         = "us-east-1"
+      + replicas_per_node_group        = (known after apply)
+      + replication_group_id           = "nexpay-dev-redis"
+      + security_group_ids             = (known after apply)
+      + security_group_names           = (known after apply)
+      + snapshot_window                = (known after apply)
+      + subnet_group_name              = "nexpay-dev-redis-subnet-group"
+      + tags                           = {
+          + "Environment" = "dev"
+          + "ManagedBy"   = "terraform"
+          + "Name"        = "nexpay-dev-redis"
+          + "Project"     = "nexpay"
+        }
+      + tags_all                       = {
+          + "Environment" = "dev"
+          + "ManagedBy"   = "terraform"
+          + "Name"        = "nexpay-dev-redis"
+          + "Project"     = "nexpay"
+        }
+      + transit_encryption_enabled     = true
+      + transit_encryption_mode        = (known after apply)
+
+      + node_group_configuration (known after apply)
+    }
+
+  # module.cache.aws_elasticache_subnet_group.nexpay_cache will be created
+  + resource "aws_elasticache_subnet_group" "nexpay_cache" {
+      + arn         = (known after apply)
+      + description = "Subnet group for the NexPay cache"
+      + id          = (known after apply)
+      + name        = "nexpay-dev-redis-subnet-group"
+      + region      = "us-east-1"
+      + subnet_ids  = (known after apply)
+      + tags        = {
+          + "Environment" = "dev"
+          + "ManagedBy"   = "terraform"
+          + "Name"        = "nexpay-dev-redis-subnet-group"
+          + "Project"     = "nexpay"
+        }
+      + tags_all    = {
+          + "Environment" = "dev"
+          + "ManagedBy"   = "terraform"
+          + "Name"        = "nexpay-dev-redis-subnet-group"
+          + "Project"     = "nexpay"
+        }
+      + vpc_id      = (known after apply)
+    }
+
+  # module.ecr.aws_ecr_repository.images_repo["frontend"] will be created
+  + resource "aws_ecr_repository" "images_repo" {
+      + arn                  = (known after apply)
+      + id                   = (known after apply)
+      + image_tag_mutability = "IMMUTABLE"
+      + name                 = "nexpay/dev/frontend"
+      + region               = "us-east-1"
+      + registry_id          = (known after apply)
+      + repository_url       = (known after apply)
+      + tags                 = {
+          + "Environment" = "dev"
+          + "ManagedBy"   = "terraform"
+          + "Name"        = "nexpay/dev/frontend"
+          + "Project"     = "nexpay"
+          + "Purpose"     = "container-registry"
+        }
+      + tags_all             = {
+          + "Environment" = "dev"
+          + "ManagedBy"   = "terraform"
+          + "Name"        = "nexpay/dev/frontend"
+          + "Project"     = "nexpay"
+          + "Purpose"     = "container-registry"
+        }
+
+      + encryption_configuration {
+          + encryption_type = "AES256"
+          + kms_key         = (known after apply)
+        }
+
+      + image_scanning_configuration {
+          + scan_on_push = true
+        }
+    }
+
+  # module.ecr.aws_ecr_repository.images_repo["payments"] will be created
+  + resource "aws_ecr_repository" "images_repo" {
+      + arn                  = (known after apply)
+      + id                   = (known after apply)
+      + image_tag_mutability = "IMMUTABLE"
+      + name                 = "nexpay/dev/payments"
+      + region               = "us-east-1"
+      + registry_id          = (known after apply)
+      + repository_url       = (known after apply)
+      + tags                 = {
+          + "Environment" = "dev"
+          + "ManagedBy"   = "terraform"
+          + "Name"        = "nexpay/dev/payments"
+          + "Project"     = "nexpay"
+          + "Purpose"     = "container-registry"
+        }
+      + tags_all             = {
+          + "Environment" = "dev"
+          + "ManagedBy"   = "terraform"
+          + "Name"        = "nexpay/dev/payments"
+          + "Project"     = "nexpay"
+          + "Purpose"     = "container-registry"
+        }
+
+      + encryption_configuration {
+          + encryption_type = "AES256"
+          + kms_key         = (known after apply)
+        }
+
+      + image_scanning_configuration {
+          + scan_on_push = true
+        }
+    }
+
+  # module.eks.aws_eks_addon.coredns will be created
+  + resource "aws_eks_addon" "coredns" {
+      + addon_name           = "coredns"
+      + addon_version        = (known after apply)
+      + arn                  = (known after apply)
+      + cluster_name         = "nexpay-dev-eks"
+      + configuration_values = (known after apply)
+      + created_at           = (known after apply)
+      + id                   = (known after apply)
+      + modified_at          = (known after apply)
+      + region               = "us-east-1"
+      + tags_all             = (known after apply)
+
+      + namespace_config (known after apply)
+    }
+
+  # module.eks.aws_eks_addon.kube_proxy will be created
+  + resource "aws_eks_addon" "kube_proxy" {
+      + addon_name           = "kube-proxy"
+      + addon_version        = (known after apply)
+      + arn                  = (known after apply)
+      + cluster_name         = "nexpay-dev-eks"
+      + configuration_values = (known after apply)
+      + created_at           = (known after apply)
+      + id                   = (known after apply)
+      + modified_at          = (known after apply)
+      + region               = "us-east-1"
+      + tags_all             = (known after apply)
+
+      + namespace_config (known after apply)
+    }
+
+  # module.eks.aws_eks_addon.pod_identity_agent will be created
+  + resource "aws_eks_addon" "pod_identity_agent" {
+      + addon_name           = "eks-pod-identity-agent"
+      + addon_version        = (known after apply)
+      + arn                  = (known after apply)
+      + cluster_name         = "nexpay-dev-eks"
+      + configuration_values = (known after apply)
+      + created_at           = (known after apply)
+      + id                   = (known after apply)
+      + modified_at          = (known after apply)
+      + region               = "us-east-1"
+      + tags_all             = (known after apply)
+
+      + namespace_config (known after apply)
+    }
+
+  # module.eks.aws_eks_addon.vpc_cni will be created
+  + resource "aws_eks_addon" "vpc_cni" {
+      + addon_name           = "vpc-cni"
+      + addon_version        = (known after apply)
+      + arn                  = (known after apply)
+      + cluster_name         = "nexpay-dev-eks"
+      + configuration_values = (known after apply)
+      + created_at           = (known after apply)
+      + id                   = (known after apply)
+      + modified_at          = (known after apply)
+      + region               = "us-east-1"
+      + tags_all             = (known after apply)
+
+      + namespace_config (known after apply)
+    }
+
+  # module.eks.aws_eks_cluster.nexpay_cluster will be created
+  + resource "aws_eks_cluster" "nexpay_cluster" {
+      + arn                           = (known after apply)
+      + bootstrap_self_managed_addons = false
+      + certificate_authority         = (known after apply)
+      + cluster_id                    = (known after apply)
+      + created_at                    = (known after apply)
+      + deletion_protection           = (known after apply)
+      + endpoint                      = (known after apply)
+      + id                            = (known after apply)
+      + identity                      = (known after apply)
+      + name                          = "nexpay-dev-eks"
+      + platform_version              = (known after apply)
+      + region                        = "us-east-1"
+      + role_arn                      = (known after apply)
+      + status                        = (known after apply)
+      + tags                          = {
+          + "Environment" = "dev"
+          + "ManagedBy"   = "terraform"
+          + "Name"        = "nexpay-dev-eks"
+          + "Project"     = "nexpay"
+        }
+      + tags_all                      = {
+          + "Environment" = "dev"
+          + "ManagedBy"   = "terraform"
+          + "Name"        = "nexpay-dev-eks"
+          + "Project"     = "nexpay"
+        }
+      + version                       = "1.36"
+
+      + access_config {
+          + authentication_mode = "API"
+        }
+
+      + compute_config (known after apply)
+
+      + control_plane_scaling_config (known after apply)
+
+      + kube_api_server_config (known after apply)
+
+      + kube_controller_manager_config (known after apply)
+
+      + kube_scheduler_config (known after apply)
+
+      + kubernetes_network_config (known after apply)
+
+      + storage_config (known after apply)
+
+      + upgrade_policy (known after apply)
+
+      + vpc_config {
+          + cluster_security_group_id = (known after apply)
+          + control_plane_egress_mode = (known after apply)
+          + endpoint_private_access   = true
+          + endpoint_public_access    = true
+          + public_access_cidrs       = (known after apply)
+          + subnet_ids                = (known after apply)
+          + vpc_id                    = (known after apply)
+        }
+    }
+
+  # module.eks.aws_eks_node_group.managed["system"] will be created
+  + resource "aws_eks_node_group" "managed" {
+      + ami_type               = (known after apply)
+      + arn                    = (known after apply)
+      + capacity_type          = "ON_DEMAND"
+      + cluster_name           = "nexpay-dev-eks"
+      + disk_size              = 30
+      + id                     = (known after apply)
+      + instance_types         = [
+          + "t3.medium",
+        ]
+      + node_group_name        = "nexpay-dev-eks-system"
+      + node_group_name_prefix = (known after apply)
+      + node_role_arn          = (known after apply)
+      + region                 = "us-east-1"
+      + release_version        = (known after apply)
+      + resources              = (known after apply)
+      + status                 = (known after apply)
+      + subnet_ids             = (known after apply)
+      + tags                   = {
+          + "Environment" = "dev"
+          + "ManagedBy"   = "terraform"
+          + "Name"        = "nexpay-dev-eks-system"
+          + "NodeGroup"   = "system"
+          + "Project"     = "nexpay"
+        }
+      + tags_all               = {
+          + "Environment" = "dev"
+          + "ManagedBy"   = "terraform"
+          + "Name"        = "nexpay-dev-eks-system"
+          + "NodeGroup"   = "system"
+          + "Project"     = "nexpay"
+        }
+      + version                = (known after apply)
+
+      + node_repair_config (known after apply)
+
+      + scaling_config {
+          + desired_size = 2
+          + max_size     = 6
+          + min_size     = 2
+        }
+
+      + update_config {
+          + max_unavailable = 1
+        }
+    }
+
+  # module.eks.aws_eks_pod_identity_association.load_balancer_controller will be created
+  + resource "aws_eks_pod_identity_association" "load_balancer_controller" {
+      + association_arn      = (known after apply)
+      + association_id       = (known after apply)
+      + cluster_name         = "nexpay-dev-eks"
+      + disable_session_tags = false
+      + external_id          = (known after apply)
+      + id                   = (known after apply)
+      + namespace            = "kube-system"
+      + region               = "us-east-1"
+      + role_arn             = (known after apply)
+      + service_account      = "aws-load-balancer-controller"
+      + tags_all             = {}
+    }
+
+  # module.eks.aws_eks_pod_identity_association.nexpay_app will be created
+  + resource "aws_eks_pod_identity_association" "nexpay_app" {
+      + association_arn      = (known after apply)
+      + association_id       = (known after apply)
+      + cluster_name         = "nexpay-dev-eks"
+      + disable_session_tags = false
+      + external_id          = (known after apply)
+      + id                   = (known after apply)
+      + namespace            = "app"
+      + region               = "us-east-1"
+      + role_arn             = (known after apply)
+      + service_account      = "sa-pod-perform"
+      + tags_all             = {}
+    }
+
+  # module.eks.aws_eks_pod_identity_association.vpc_cni will be created
+  + resource "aws_eks_pod_identity_association" "vpc_cni" {
+      + association_arn      = (known after apply)
+      + association_id       = (known after apply)
+      + cluster_name         = "nexpay-dev-eks"
+      + disable_session_tags = false
+      + external_id          = (known after apply)
+      + id                   = (known after apply)
+      + namespace            = "kube-system"
+      + region               = "us-east-1"
+      + role_arn             = (known after apply)
+      + service_account      = "aws-node"
+      + tags_all             = {}
+    }
+
+  # module.eks.aws_iam_policy.load_balancer_controller_policy will be created
+  + resource "aws_iam_policy" "load_balancer_controller_policy" {
+      + arn              = (known after apply)
+      + attachment_count = (known after apply)
+      + description      = "IAM policy for the AWS Load Balancer Controller"
+      + id               = (known after apply)
+      + name             = "nexpay-dev-eks-load-balancer-controller-policy"
+      + name_prefix      = (known after apply)
+      + path             = "/"
+      + policy           = jsonencode(
+            {
+              + Statement = [
+                  + {
+                      + Action    = [
+                          + "iam:CreateServiceLinkedRole",
+                        ]
+                      + Condition = {
+                          + StringEquals = {
+                              + "iam:AWSServiceName" = "elasticloadbalancing.amazonaws.com"
+                            }
+                        }
+                      + Effect    = "Allow"
+                      + Resource  = "*"
+                    },
+                  + {
+                      + Action   = [
+                          + "ec2:DescribeAccountAttributes",
+                          + "ec2:DescribeAddresses",
+                          + "ec2:DescribeAvailabilityZones",
+                          + "ec2:DescribeInternetGateways",
+                          + "ec2:DescribeVpcs",
+                          + "ec2:DescribeVpcPeeringConnections",
+                          + "ec2:DescribeSubnets",
+                          + "ec2:DescribeSecurityGroups",
+                          + "ec2:DescribeInstances",
+                          + "ec2:DescribeNetworkInterfaces",
+                          + "ec2:DescribeTags",
+                          + "ec2:GetCoipPoolUsage",
+                          + "ec2:DescribeCoipPools",
+                          + "ec2:GetSecurityGroupsForVpc",
+                          + "ec2:DescribeIpamPools",
+                          + "ec2:DescribeRouteTables",
+                          + "elasticloadbalancing:DescribeLoadBalancers",
+                          + "elasticloadbalancing:DescribeLoadBalancerAttributes",
+                          + "elasticloadbalancing:DescribeListeners",
+                          + "elasticloadbalancing:DescribeListenerCertificates",
+                          + "elasticloadbalancing:DescribeSSLPolicies",
+                          + "elasticloadbalancing:DescribeRules",
+                          + "elasticloadbalancing:DescribeTargetGroups",
+                          + "elasticloadbalancing:DescribeTargetGroupAttributes",
+                          + "elasticloadbalancing:DescribeTargetHealth",
+                          + "elasticloadbalancing:DescribeTags",
+                          + "elasticloadbalancing:DescribeTrustStores",
+                          + "elasticloadbalancing:DescribeListenerAttributes",
+                          + "elasticloadbalancing:DescribeCapacityReservation",
+                        ]
+                      + Effect   = "Allow"
+                      + Resource = "*"
+                    },
+                  + {
+                      + Action   = [
+                          + "cognito-idp:DescribeUserPoolClient",
+                          + "acm:ListCertificates",
+                          + "acm:DescribeCertificate",
+                          + "iam:ListServerCertificates",
+                          + "iam:GetServerCertificate",
+                          + "waf-regional:GetWebACL",
+                          + "waf-regional:GetWebACLForResource",
+                          + "waf-regional:AssociateWebACL",
+                          + "waf-regional:DisassociateWebACL",
+                          + "wafv2:GetWebACL",
+                          + "wafv2:GetWebACLForResource",
+                          + "wafv2:AssociateWebACL",
+                          + "wafv2:DisassociateWebACL",
+                          + "shield:GetSubscriptionState",
+                          + "shield:DescribeProtection",
+                          + "shield:CreateProtection",
+                          + "shield:DeleteProtection",
+                        ]
+                      + Effect   = "Allow"
+                      + Resource = "*"
+                    },
+                  + {
+                      + Action   = [
+                          + "ec2:AuthorizeSecurityGroupIngress",
+                          + "ec2:RevokeSecurityGroupIngress",
+                        ]
+                      + Effect   = "Allow"
+                      + Resource = "*"
+                    },
+                  + {
+                      + Action   = [
+                          + "ec2:CreateSecurityGroup",
+                        ]
+                      + Effect   = "Allow"
+                      + Resource = "*"
+                    },
+                  + {
+                      + Action    = [
+                          + "ec2:CreateTags",
+                        ]
+                      + Condition = {
+                          + Null         = {
+                              + "aws:RequestTag/elbv2.k8s.aws/cluster" = "false"
+                            }
+                          + StringEquals = {
+                              + "ec2:CreateAction" = "CreateSecurityGroup"
+                            }
+                        }
+                      + Effect    = "Allow"
+                      + Resource  = "arn:aws:ec2:*:*:security-group/*"
+                    },
+                  + {
+                      + Action    = [
+                          + "ec2:CreateTags",
+                          + "ec2:DeleteTags",
+                        ]
+                      + Condition = {
+                          + Null = {
+                              + "aws:RequestTag/elbv2.k8s.aws/cluster"  = "true"
+                              + "aws:ResourceTag/elbv2.k8s.aws/cluster" = "false"
+                            }
+                        }
+                      + Effect    = "Allow"
+                      + Resource  = "arn:aws:ec2:*:*:security-group/*"
+                    },
+                  + {
+                      + Action    = [
+                          + "ec2:AuthorizeSecurityGroupIngress",
+                          + "ec2:RevokeSecurityGroupIngress",
+                          + "ec2:DeleteSecurityGroup",
+                        ]
+                      + Condition = {
+                          + Null = {
+                              + "aws:ResourceTag/elbv2.k8s.aws/cluster" = "false"
+                            }
+                        }
+                      + Effect    = "Allow"
+                      + Resource  = "*"
+                    },
+                  + {
+                      + Action    = [
+                          + "elasticloadbalancing:CreateLoadBalancer",
+                          + "elasticloadbalancing:CreateTargetGroup",
+                        ]
+                      + Condition = {
+                          + Null = {
+                              + "aws:RequestTag/elbv2.k8s.aws/cluster" = "false"
+                            }
+                        }
+                      + Effect    = "Allow"
+                      + Resource  = "*"
+                    },
+                  + {
+                      + Action   = [
+                          + "elasticloadbalancing:CreateListener",
+                          + "elasticloadbalancing:DeleteListener",
+                          + "elasticloadbalancing:CreateRule",
+                          + "elasticloadbalancing:DeleteRule",
+                        ]
+                      + Effect   = "Allow"
+                      + Resource = "*"
+                    },
+                  + {
+                      + Action    = [
+                          + "elasticloadbalancing:AddTags",
+                          + "elasticloadbalancing:RemoveTags",
+                        ]
+                      + Condition = {
+                          + Null = {
+                              + "aws:RequestTag/elbv2.k8s.aws/cluster"  = "true"
+                              + "aws:ResourceTag/elbv2.k8s.aws/cluster" = "false"
+                            }
+                        }
+                      + Effect    = "Allow"
+                      + Resource  = [
+                          + "arn:aws:elasticloadbalancing:*:*:targetgroup/*/*",
+                          + "arn:aws:elasticloadbalancing:*:*:loadbalancer/net/*/*",
+                          + "arn:aws:elasticloadbalancing:*:*:loadbalancer/app/*/*",
+                        ]
+                    },
+                  + {
+                      + Action   = [
+                          + "elasticloadbalancing:AddTags",
+                          + "elasticloadbalancing:RemoveTags",
+                        ]
+                      + Effect   = "Allow"
+                      + Resource = [
+                          + "arn:aws:elasticloadbalancing:*:*:listener/net/*/*/*",
+                          + "arn:aws:elasticloadbalancing:*:*:listener/app/*/*/*",
+                          + "arn:aws:elasticloadbalancing:*:*:listener-rule/net/*/*/*",
+                          + "arn:aws:elasticloadbalancing:*:*:listener-rule/app/*/*/*",
+                        ]
+                    },
+                  + {
+                      + Action    = [
+                          + "elasticloadbalancing:ModifyLoadBalancerAttributes",
+                          + "elasticloadbalancing:SetIpAddressType",
+                          + "elasticloadbalancing:SetSecurityGroups",
+                          + "elasticloadbalancing:SetSubnets",
+                          + "elasticloadbalancing:DeleteLoadBalancer",
+                          + "elasticloadbalancing:ModifyTargetGroup",
+                          + "elasticloadbalancing:ModifyTargetGroupAttributes",
+                          + "elasticloadbalancing:DeleteTargetGroup",
+                          + "elasticloadbalancing:ModifyListenerAttributes",
+                          + "elasticloadbalancing:ModifyCapacityReservation",
+                          + "elasticloadbalancing:ModifyIpPools",
+                        ]
+                      + Condition = {
+                          + Null = {
+                              + "aws:ResourceTag/elbv2.k8s.aws/cluster" = "false"
+                            }
+                        }
+                      + Effect    = "Allow"
+                      + Resource  = "*"
+                    },
+                  + {
+                      + Action    = [
+                          + "elasticloadbalancing:AddTags",
+                        ]
+                      + Condition = {
+                          + Null         = {
+                              + "aws:RequestTag/elbv2.k8s.aws/cluster" = "false"
+                            }
+                          + StringEquals = {
+                              + "elasticloadbalancing:CreateAction" = [
+                                  + "CreateTargetGroup",
+                                  + "CreateLoadBalancer",
+                                ]
+                            }
+                        }
+                      + Effect    = "Allow"
+                      + Resource  = [
+                          + "arn:aws:elasticloadbalancing:*:*:targetgroup/*/*",
+                          + "arn:aws:elasticloadbalancing:*:*:loadbalancer/net/*/*",
+                          + "arn:aws:elasticloadbalancing:*:*:loadbalancer/app/*/*",
+                        ]
+                    },
+                  + {
+                      + Action   = [
+                          + "elasticloadbalancing:RegisterTargets",
+                          + "elasticloadbalancing:DeregisterTargets",
+                        ]
+                      + Effect   = "Allow"
+                      + Resource = "arn:aws:elasticloadbalancing:*:*:targetgroup/*/*"
+                    },
+                  + {
+                      + Action   = [
+                          + "elasticloadbalancing:SetWebAcl",
+                          + "elasticloadbalancing:ModifyListener",
+                          + "elasticloadbalancing:AddListenerCertificates",
+                          + "elasticloadbalancing:RemoveListenerCertificates",
+                          + "elasticloadbalancing:ModifyRule",
+                          + "elasticloadbalancing:SetRulePriorities",
+                        ]
+                      + Effect   = "Allow"
+                      + Resource = "*"
+                    },
+                ]
+              + Version   = "2012-10-17"
+            }
+        )
+      + policy_id        = (known after apply)
+      + tags             = {
+          + "Environment" = "dev"
+          + "ManagedBy"   = "terraform"
+          + "Name"        = "nexpay-dev-eks-load-balancer-controller-policy"
+          + "Project"     = "nexpay"
+        }
+      + tags_all         = {
+          + "Environment" = "dev"
+          + "ManagedBy"   = "terraform"
+          + "Name"        = "nexpay-dev-eks-load-balancer-controller-policy"
+          + "Project"     = "nexpay"
+        }
+    }
+
+  # module.eks.aws_iam_policy.sqs_app_policy will be created
+  + resource "aws_iam_policy" "sqs_app_policy" {
+      + arn              = (known after apply)
+      + attachment_count = (known after apply)
+      + description      = "Permite que a aplicacao acesse as filas SQS"
+      + id               = (known after apply)
+      + name             = "nexpay-dev-eks-sqs-app-policy"
+      + name_prefix      = (known after apply)
+      + path             = "/"
+      + policy           = (known after apply)
+      + policy_id        = (known after apply)
+      + tags_all         = (known after apply)
+    }
+
+  # module.eks.aws_iam_role.eks_cluster_role will be created
+  + resource "aws_iam_role" "eks_cluster_role" {
+      + arn                   = (known after apply)
+      + assume_role_policy    = jsonencode(
+            {
+              + Statement = [
+                  + {
+                      + Action    = [
+                          + "sts:AssumeRole",
+                          + "sts:TagSession",
+                        ]
+                      + Effect    = "Allow"
+                      + Principal = {
+                          + Service = "eks.amazonaws.com"
+                        }
+                    },
+                ]
+              + Version   = "2012-10-17"
+            }
+        )
+      + create_date           = (known after apply)
+      + force_detach_policies = false
+      + id                    = (known after apply)
+      + managed_policy_arns   = (known after apply)
+      + max_session_duration  = 3600
+      + name                  = "nexpay-dev-eks-cluster-role"
+      + name_prefix           = (known after apply)
+      + path                  = "/"
+      + tags                  = {
+          + "Environment" = "dev"
+          + "ManagedBy"   = "terraform"
+          + "Name"        = "nexpay-dev-eks-cluster-role"
+          + "Project"     = "nexpay"
+        }
+      + tags_all              = {
+          + "Environment" = "dev"
+          + "ManagedBy"   = "terraform"
+          + "Name"        = "nexpay-dev-eks-cluster-role"
+          + "Project"     = "nexpay"
+        }
+      + unique_id             = (known after apply)
+
+      + inline_policy (known after apply)
+    }
+
+  # module.eks.aws_iam_role.eks_node_role will be created
+  + resource "aws_iam_role" "eks_node_role" {
+      + arn                   = (known after apply)
+      + assume_role_policy    = jsonencode(
+            {
+              + Statement = [
+                  + {
+                      + Action    = [
+                          + "sts:AssumeRole",
+                          + "sts:TagSession",
+                        ]
+                      + Effect    = "Allow"
+                      + Principal = {
+                          + Service = "ec2.amazonaws.com"
+                        }
+                    },
+                ]
+              + Version   = "2012-10-17"
+            }
+        )
+      + create_date           = (known after apply)
+      + force_detach_policies = false
+      + id                    = (known after apply)
+      + managed_policy_arns   = (known after apply)
+      + max_session_duration  = 3600
+      + name                  = "nexpay-dev-eks-node-role"
+      + name_prefix           = (known after apply)
+      + path                  = "/"
+      + tags                  = {
+          + "Environment" = "dev"
+          + "ManagedBy"   = "terraform"
+          + "Name"        = "nexpay-dev-eks-node-role"
+          + "Project"     = "nexpay"
+        }
+      + tags_all              = {
+          + "Environment" = "dev"
+          + "ManagedBy"   = "terraform"
+          + "Name"        = "nexpay-dev-eks-node-role"
+          + "Project"     = "nexpay"
+        }
+      + unique_id             = (known after apply)
+
+      + inline_policy (known after apply)
+    }
+
+  # module.eks.aws_iam_role.load_balancer_controller_role will be created
+  + resource "aws_iam_role" "load_balancer_controller_role" {
+      + arn                   = (known after apply)
+      + assume_role_policy    = jsonencode(
+            {
+              + Statement = [
+                  + {
+                      + Action    = [
+                          + "sts:AssumeRole",
+                          + "sts:TagSession",
+                        ]
+                      + Effect    = "Allow"
+                      + Principal = {
+                          + Service = "pods.eks.amazonaws.com"
+                        }
+                    },
+                ]
+              + Version   = "2012-10-17"
+            }
+        )
+      + create_date           = (known after apply)
+      + force_detach_policies = false
+      + id                    = (known after apply)
+      + managed_policy_arns   = (known after apply)
+      + max_session_duration  = 3600
+      + name                  = "nexpay-dev-eks-load-balancer-controller-role"
+      + name_prefix           = (known after apply)
+      + path                  = "/"
+      + tags                  = {
+          + "Environment" = "dev"
+          + "ManagedBy"   = "terraform"
+          + "Name"        = "nexpay-dev-eks-load-balancer-controller-role"
+          + "Project"     = "nexpay"
+        }
+      + tags_all              = {
+          + "Environment" = "dev"
+          + "ManagedBy"   = "terraform"
+          + "Name"        = "nexpay-dev-eks-load-balancer-controller-role"
+          + "Project"     = "nexpay"
+        }
+      + unique_id             = (known after apply)
+
+      + inline_policy (known after apply)
+    }
+
+  # module.eks.aws_iam_role.nexpay_app_role will be created
+  + resource "aws_iam_role" "nexpay_app_role" {
+      + arn                   = (known after apply)
+      + assume_role_policy    = jsonencode(
+            {
+              + Statement = [
+                  + {
+                      + Action    = [
+                          + "sts:AssumeRole",
+                          + "sts:TagSession",
+                        ]
+                      + Effect    = "Allow"
+                      + Principal = {
+                          + Service = "pods.eks.amazonaws.com"
+                        }
+                    },
+                ]
+              + Version   = "2012-10-17"
+            }
+        )
+      + create_date           = (known after apply)
+      + force_detach_policies = false
+      + id                    = (known after apply)
+      + managed_policy_arns   = (known after apply)
+      + max_session_duration  = 3600
+      + name                  = "nexpay-dev-eks-app-role"
+      + name_prefix           = (known after apply)
+      + path                  = "/"
+      + tags_all              = (known after apply)
+      + unique_id             = (known after apply)
+
+      + inline_policy (known after apply)
+    }
+
+  # module.eks.aws_iam_role.vpc_cni_role will be created
+  + resource "aws_iam_role" "vpc_cni_role" {
+      + arn                   = (known after apply)
+      + assume_role_policy    = jsonencode(
+            {
+              + Statement = [
+                  + {
+                      + Action    = [
+                          + "sts:AssumeRole",
+                          + "sts:TagSession",
+                        ]
+                      + Effect    = "Allow"
+                      + Principal = {
+                          + Service = "pods.eks.amazonaws.com"
+                        }
+                    },
+                ]
+              + Version   = "2012-10-17"
+            }
+        )
+      + create_date           = (known after apply)
+      + force_detach_policies = false
+      + id                    = (known after apply)
+      + managed_policy_arns   = (known after apply)
+      + max_session_duration  = 3600
+      + name                  = "nexpay-dev-eks-vpc-cni-role"
+      + name_prefix           = (known after apply)
+      + path                  = "/"
+      + tags                  = {
+          + "Environment" = "dev"
+          + "ManagedBy"   = "terraform"
+          + "Name"        = "nexpay-dev-eks-vpc-cni-role"
+          + "Project"     = "nexpay"
+        }
+      + tags_all              = {
+          + "Environment" = "dev"
+          + "ManagedBy"   = "terraform"
+          + "Name"        = "nexpay-dev-eks-vpc-cni-role"
+          + "Project"     = "nexpay"
+        }
+      + unique_id             = (known after apply)
+
+      + inline_policy (known after apply)
+    }
+
+  # module.eks.aws_iam_role_policy_attachment.ecr_pull_policy will be created
+  + resource "aws_iam_role_policy_attachment" "ecr_pull_policy" {
+      + id         = (known after apply)
+      + policy_arn = "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryPullOnly"
+      + role       = "nexpay-dev-eks-node-role"
+    }
+
+  # module.eks.aws_iam_role_policy_attachment.eks_cluster_policy_attachment will be created
+  + resource "aws_iam_role_policy_attachment" "eks_cluster_policy_attachment" {
+      + id         = (known after apply)
+      + policy_arn = "arn:aws:iam::aws:policy/AmazonEKSClusterPolicy"
+      + role       = "nexpay-dev-eks-cluster-role"
+    }
+
+  # module.eks.aws_iam_role_policy_attachment.eks_worker_node_policy will be created
+  + resource "aws_iam_role_policy_attachment" "eks_worker_node_policy" {
+      + id         = (known after apply)
+      + policy_arn = "arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy"
+      + role       = "nexpay-dev-eks-node-role"
+    }
+
+  # module.eks.aws_iam_role_policy_attachment.load_balancer_controller_policy will be created
+  + resource "aws_iam_role_policy_attachment" "load_balancer_controller_policy" {
+      + id         = (known after apply)
+      + policy_arn = (known after apply)
+      + role       = "nexpay-dev-eks-load-balancer-controller-role"
+    }
+
+  # module.eks.aws_iam_role_policy_attachment.sqs_app_policy_attach will be created
+  + resource "aws_iam_role_policy_attachment" "sqs_app_policy_attach" {
+      + id         = (known after apply)
+      + policy_arn = (known after apply)
+      + role       = "nexpay-dev-eks-app-role"
+    }
+
+  # module.eks.aws_iam_role_policy_attachment.vpc_cni_policy_attachment will be created
+  + resource "aws_iam_role_policy_attachment" "vpc_cni_policy_attachment" {
+      + id         = (known after apply)
+      + policy_arn = "arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy"
+      + role       = "nexpay-dev-eks-vpc-cni-role"
+    }
+
+  # module.github_actions.aws_iam_openid_connect_provider.github will be created
+  + resource "aws_iam_openid_connect_provider" "github" {
+      + arn             = (known after apply)
+      + client_id_list  = [
+          + "sts.amazonaws.com",
+        ]
+      + id              = (known after apply)
+      + tags            = {
+          + "ManagedBy" = "terraform"
+          + "Name"      = "github-actions-oidc"
+          + "Project"   = "nexpay"
+          + "Purpose"   = "github-actions-identity"
+        }
+      + tags_all        = {
+          + "ManagedBy" = "terraform"
+          + "Name"      = "github-actions-oidc"
+          + "Project"   = "nexpay"
+          + "Purpose"   = "github-actions-identity"
+        }
+      + thumbprint_list = (known after apply)
+      + url             = "https://token.actions.githubusercontent.com"
+    }
+
+  # module.github_actions.aws_iam_policy.ecr_push will be created
+  + resource "aws_iam_policy" "ecr_push" {
+      + arn              = (known after apply)
+      + attachment_count = (known after apply)
+      + description      = "Allow GitHub Actions CI to authenticate and push NexPay images to ECR"
+      + id               = (known after apply)
+      + name             = "nexpay-github-actions-ci-ecr-push"
+      + name_prefix      = (known after apply)
+      + path             = "/"
+      + policy           = (known after apply)
+      + policy_id        = (known after apply)
+      + tags_all         = (known after apply)
+    }
+
+  # module.github_actions.aws_iam_role.github_actions_ci will be created
+  + resource "aws_iam_role" "github_actions_ci" {
+      + arn                   = (known after apply)
+      + assume_role_policy    = (known after apply)
+      + create_date           = (known after apply)
+      + force_detach_policies = false
+      + id                    = (known after apply)
+      + managed_policy_arns   = (known after apply)
+      + max_session_duration  = 3600
+      + name                  = "nexpay-github-actions-ci"
+      + name_prefix           = (known after apply)
+      + path                  = "/"
+      + tags                  = {
+          + "ManagedBy" = "terraform"
+          + "Name"      = "nexpay-github-actions-ci"
+          + "Project"   = "nexpay"
+          + "Purpose"   = "github-actions-ci"
+        }
+      + tags_all              = {
+          + "ManagedBy" = "terraform"
+          + "Name"      = "nexpay-github-actions-ci"
+          + "Project"   = "nexpay"
+          + "Purpose"   = "github-actions-ci"
+        }
+      + unique_id             = (known after apply)
+
+      + inline_policy (known after apply)
+    }
+
+  # module.github_actions.aws_iam_role_policy_attachment.ecr_push will be created
+  + resource "aws_iam_role_policy_attachment" "ecr_push" {
+      + id         = (known after apply)
+      + policy_arn = (known after apply)
+      + role       = "nexpay-github-actions-ci"
+    }
+
+  # module.messaging.aws_sns_topic.payment_events will be created
+  + resource "aws_sns_topic" "payment_events" {
+      + arn                         = (known after apply)
+      + beginning_archive_time      = (known after apply)
+      + content_based_deduplication = false
+      + fifo_throughput_scope       = (known after apply)
+      + fifo_topic                  = false
+      + id                          = (known after apply)
+      + name                        = "nexpay-dev-payment-events"
+      + name_prefix                 = (known after apply)
+      + owner                       = (known after apply)
+      + policy                      = (known after apply)
+      + region                      = "us-east-1"
+      + signature_version           = (known after apply)
+      + tags                        = {
+          + "Environment" = "dev"
+          + "ManagedBy"   = "terraform"
+          + "Name"        = "nexpay-dev-payment-events"
+          + "Project"     = "nexpay"
+        }
+      + tags_all                    = {
+          + "Environment" = "dev"
+          + "ManagedBy"   = "terraform"
+          + "Name"        = "nexpay-dev-payment-events"
+          + "Project"     = "nexpay"
+        }
+      + tracing_config              = (known after apply)
+    }
+
+  # module.messaging.aws_sns_topic_subscription.analytics will be created
+  + resource "aws_sns_topic_subscription" "analytics" {
+      + arn                             = (known after apply)
+      + confirmation_timeout_in_minutes = 1
+      + confirmation_was_authenticated  = (known after apply)
+      + endpoint                        = (known after apply)
+      + endpoint_auto_confirms          = false
+      + filter_policy_scope             = (known after apply)
+      + id                              = (known after apply)
+      + owner_id                        = (known after apply)
+      + pending_confirmation            = (known after apply)
+      + protocol                        = "sqs"
+      + raw_message_delivery            = true
+      + region                          = "us-east-1"
+      + topic_arn                       = (known after apply)
+    }
+
+  # module.messaging.aws_sns_topic_subscription.fraud will be created
+  + resource "aws_sns_topic_subscription" "fraud" {
+      + arn                             = (known after apply)
+      + confirmation_timeout_in_minutes = 1
+      + confirmation_was_authenticated  = (known after apply)
+      + endpoint                        = (known after apply)
+      + endpoint_auto_confirms          = false
+      + filter_policy_scope             = (known after apply)
+      + id                              = (known after apply)
+      + owner_id                        = (known after apply)
+      + pending_confirmation            = (known after apply)
+      + protocol                        = "sqs"
+      + raw_message_delivery            = true
+      + region                          = "us-east-1"
+      + topic_arn                       = (known after apply)
+    }
+
+  # module.messaging.aws_sns_topic_subscription.notification will be created
+  + resource "aws_sns_topic_subscription" "notification" {
+      + arn                             = (known after apply)
+      + confirmation_timeout_in_minutes = 1
+      + confirmation_was_authenticated  = (known after apply)
+      + endpoint                        = (known after apply)
+      + endpoint_auto_confirms          = false
+      + filter_policy_scope             = (known after apply)
+      + id                              = (known after apply)
+      + owner_id                        = (known after apply)
+      + pending_confirmation            = (known after apply)
+      + protocol                        = "sqs"
+      + raw_message_delivery            = true
+      + region                          = "us-east-1"
+      + topic_arn                       = (known after apply)
+    }
+
+  # module.messaging.aws_sqs_queue.analytics will be created
+  + resource "aws_sqs_queue" "analytics" {
+      + arn                               = (known after apply)
+      + content_based_deduplication       = false
+      + deduplication_scope               = (known after apply)
+      + delay_seconds                     = 0
+      + fifo_queue                        = false
+      + fifo_throughput_limit             = (known after apply)
+      + id                                = (known after apply)
+      + kms_data_key_reuse_period_seconds = 0
+      + max_message_size                  = 262144
+      + message_retention_seconds         = 345600
+      + name                              = "nexpay-dev-analytics"
+      + name_prefix                       = (known after apply)
+      + policy                            = (known after apply)
+      + receive_wait_time_seconds         = 20
+      + redrive_allow_policy              = (known after apply)
+      + redrive_policy                    = (known after apply)
+      + region                            = "us-east-1"
+      + sqs_managed_sse_enabled           = true
+      + tags                              = {
+          + "Environment" = "dev"
+          + "ManagedBy"   = "terraform"
+          + "Name"        = "nexpay-dev-analytics"
+          + "Project"     = "nexpay"
+          + "Purpose"     = "analytics-processing"
+        }
+      + tags_all                          = {
+          + "Environment" = "dev"
+          + "ManagedBy"   = "terraform"
+          + "Name"        = "nexpay-dev-analytics"
+          + "Project"     = "nexpay"
+          + "Purpose"     = "analytics-processing"
+        }
+      + url                               = (known after apply)
+      + visibility_timeout_seconds        = 60
+    }
+
+  # module.messaging.aws_sqs_queue.analytics_dlq will be created
+  + resource "aws_sqs_queue" "analytics_dlq" {
+      + arn                               = (known after apply)
+      + content_based_deduplication       = false
+      + deduplication_scope               = (known after apply)
+      + delay_seconds                     = 0
+      + fifo_queue                        = false
+      + fifo_throughput_limit             = (known after apply)
+      + id                                = (known after apply)
+      + kms_data_key_reuse_period_seconds = 0
+      + max_message_size                  = 262144
+      + message_retention_seconds         = 1209600
+      + name                              = "nexpay-dev-analytics-dlq"
+      + name_prefix                       = (known after apply)
+      + policy                            = (known after apply)
+      + receive_wait_time_seconds         = 0
+      + redrive_allow_policy              = (known after apply)
+      + redrive_policy                    = (known after apply)
+      + region                            = "us-east-1"
+      + sqs_managed_sse_enabled           = true
+      + tags                              = {
+          + "Environment" = "dev"
+          + "ManagedBy"   = "terraform"
+          + "Name"        = "nexpay-dev-analytics-dlq"
+          + "Project"     = "nexpay"
+          + "Purpose"     = "analytics-dead-letter"
+        }
+      + tags_all                          = {
+          + "Environment" = "dev"
+          + "ManagedBy"   = "terraform"
+          + "Name"        = "nexpay-dev-analytics-dlq"
+          + "Project"     = "nexpay"
+          + "Purpose"     = "analytics-dead-letter"
+        }
+      + url                               = (known after apply)
+      + visibility_timeout_seconds        = 30
+    }
+
+  # module.messaging.aws_sqs_queue.fraud will be created
+  + resource "aws_sqs_queue" "fraud" {
+      + arn                               = (known after apply)
+      + content_based_deduplication       = false
+      + deduplication_scope               = (known after apply)
+      + delay_seconds                     = 0
+      + fifo_queue                        = false
+      + fifo_throughput_limit             = (known after apply)
+      + id                                = (known after apply)
+      + kms_data_key_reuse_period_seconds = 0
+      + max_message_size                  = 262144
+      + message_retention_seconds         = 345600
+      + name                              = "nexpay-dev-fraud"
+      + name_prefix                       = (known after apply)
+      + policy                            = (known after apply)
+      + receive_wait_time_seconds         = 20
+      + redrive_allow_policy              = (known after apply)
+      + redrive_policy                    = (known after apply)
+      + region                            = "us-east-1"
+      + sqs_managed_sse_enabled           = true
+      + tags                              = {
+          + "Environment" = "dev"
+          + "ManagedBy"   = "terraform"
+          + "Name"        = "nexpay-dev-fraud"
+          + "Project"     = "nexpay"
+          + "Purpose"     = "fraud-processing"
+        }
+      + tags_all                          = {
+          + "Environment" = "dev"
+          + "ManagedBy"   = "terraform"
+          + "Name"        = "nexpay-dev-fraud"
+          + "Project"     = "nexpay"
+          + "Purpose"     = "fraud-processing"
+        }
+      + url                               = (known after apply)
+      + visibility_timeout_seconds        = 60
+    }
+
+  # module.messaging.aws_sqs_queue.fraud_dlq will be created
+  + resource "aws_sqs_queue" "fraud_dlq" {
+      + arn                               = (known after apply)
+      + content_based_deduplication       = false
+      + deduplication_scope               = (known after apply)
+      + delay_seconds                     = 0
+      + fifo_queue                        = false
+      + fifo_throughput_limit             = (known after apply)
+      + id                                = (known after apply)
+      + kms_data_key_reuse_period_seconds = 0
+      + max_message_size                  = 262144
+      + message_retention_seconds         = 1209600
+      + name                              = "nexpay-dev-fraud-dlq"
+      + name_prefix                       = (known after apply)
+      + policy                            = (known after apply)
+      + receive_wait_time_seconds         = 0
+      + redrive_allow_policy              = (known after apply)
+      + redrive_policy                    = (known after apply)
+      + region                            = "us-east-1"
+      + sqs_managed_sse_enabled           = true
+      + tags                              = {
+          + "Environment" = "dev"
+          + "ManagedBy"   = "terraform"
+          + "Name"        = "nexpay-dev-fraud-dlq"
+          + "Project"     = "nexpay"
+          + "Purpose"     = "fraud-dead-letter"
+        }
+      + tags_all                          = {
+          + "Environment" = "dev"
+          + "ManagedBy"   = "terraform"
+          + "Name"        = "nexpay-dev-fraud-dlq"
+          + "Project"     = "nexpay"
+          + "Purpose"     = "fraud-dead-letter"
+        }
+      + url                               = (known after apply)
+      + visibility_timeout_seconds        = 30
+    }
+
+  # module.messaging.aws_sqs_queue.notification will be created
+  + resource "aws_sqs_queue" "notification" {
+      + arn                               = (known after apply)
+      + content_based_deduplication       = false
+      + deduplication_scope               = (known after apply)
+      + delay_seconds                     = 0
+      + fifo_queue                        = false
+      + fifo_throughput_limit             = (known after apply)
+      + id                                = (known after apply)
+      + kms_data_key_reuse_period_seconds = 0
+      + max_message_size                  = 262144
+      + message_retention_seconds         = 345600
+      + name                              = "nexpay-dev-notification"
+      + name_prefix                       = (known after apply)
+      + policy                            = (known after apply)
+      + receive_wait_time_seconds         = 20
+      + redrive_allow_policy              = (known after apply)
+      + redrive_policy                    = (known after apply)
+      + region                            = "us-east-1"
+      + sqs_managed_sse_enabled           = true
+      + tags                              = {
+          + "Environment" = "dev"
+          + "ManagedBy"   = "terraform"
+          + "Name"        = "nexpay-dev-notification"
+          + "Project"     = "nexpay"
+          + "Purpose"     = "notification-processing"
+        }
+      + tags_all                          = {
+          + "Environment" = "dev"
+          + "ManagedBy"   = "terraform"
+          + "Name"        = "nexpay-dev-notification"
+          + "Project"     = "nexpay"
+          + "Purpose"     = "notification-processing"
+        }
+      + url                               = (known after apply)
+      + visibility_timeout_seconds        = 60
+    }
+
+  # module.messaging.aws_sqs_queue.notification_dlq will be created
+  + resource "aws_sqs_queue" "notification_dlq" {
+      + arn                               = (known after apply)
+      + content_based_deduplication       = false
+      + deduplication_scope               = (known after apply)
+      + delay_seconds                     = 0
+      + fifo_queue                        = false
+      + fifo_throughput_limit             = (known after apply)
+      + id                                = (known after apply)
+      + kms_data_key_reuse_period_seconds = 0
+      + max_message_size                  = 262144
+      + message_retention_seconds         = 1209600
+      + name                              = "nexpay-dev-notification-dlq"
+      + name_prefix                       = (known after apply)
+      + policy                            = (known after apply)
+      + receive_wait_time_seconds         = 0
+      + redrive_allow_policy              = (known after apply)
+      + redrive_policy                    = (known after apply)
+      + region                            = "us-east-1"
+      + sqs_managed_sse_enabled           = true
+      + tags                              = {
+          + "Environment" = "dev"
+          + "ManagedBy"   = "terraform"
+          + "Name"        = "nexpay-dev-notification-dlq"
+          + "Project"     = "nexpay"
+          + "Purpose"     = "notification-dead-letter"
+        }
+      + tags_all                          = {
+          + "Environment" = "dev"
+          + "ManagedBy"   = "terraform"
+          + "Name"        = "nexpay-dev-notification-dlq"
+          + "Project"     = "nexpay"
+          + "Purpose"     = "notification-dead-letter"
+        }
+      + url                               = (known after apply)
+      + visibility_timeout_seconds        = 30
+    }
+
+  # module.messaging.aws_sqs_queue_policy.analytics will be created
+  + resource "aws_sqs_queue_policy" "analytics" {
+      + id        = (known after apply)
+      + policy    = (known after apply)
+      + queue_url = (known after apply)
+      + region    = "us-east-1"
+    }
+
+  # module.messaging.aws_sqs_queue_policy.fraud will be created
+  + resource "aws_sqs_queue_policy" "fraud" {
+      + id        = (known after apply)
+      + policy    = (known after apply)
+      + queue_url = (known after apply)
+      + region    = "us-east-1"
+    }
+
+  # module.messaging.aws_sqs_queue_policy.notification will be created
+  + resource "aws_sqs_queue_policy" "notification" {
+      + id        = (known after apply)
+      + policy    = (known after apply)
+      + queue_url = (known after apply)
+      + region    = "us-east-1"
+    }
+
+  # module.observability.helm_release.kube_prometheus_stack will be created
+  + resource "helm_release" "kube_prometheus_stack" {
+      + atomic                     = true
+      + chart                      = "kube-prometheus-stack"
+      + cleanup_on_fail            = false
+      + create_namespace           = true
+      + dependency_update          = false
+      + disable_crd_hooks          = false
+      + disable_openapi_validation = false
+      + disable_webhooks           = false
+      + force_update               = false
+      + id                         = (known after apply)
+      + lint                       = false
+      + max_history                = 0
+      + metadata                   = (known after apply)
+      + name                       = "kube-prometheus-stack"
+      + namespace                  = "monitoring"
+      + pass_credentials           = false
+      + recreate_pods              = false
+      + render_subchart_notes      = true
+      + replace                    = false
+      + repository                 = "https://prometheus-community.github.io/helm-charts"
+      + reset_values               = false
+      + reuse_values               = false
+      + set_wo                     = (write-only attribute)
+      + skip_crds                  = false
+      + status                     = "deployed"
+      + take_ownership             = false
+      + timeout                    = 900
+      + upgrade_install            = false
+      + values                     = [
+          + <<-EOT
+                prometheus:
+                  enabled: true
+                
+                  prometheusSpec:
+                    replicas: 1
+                
+                    retention: 7d
+                
+                    resources:
+                      requests:
+                        cpu: 250m
+                        memory: 512Mi
+                      limits:
+                        cpu: "1"
+                        memory: 1Gi
+                
+                    storageSpec:
+                      volumeClaimTemplate:
+                        spec:
+                          accessModes:
+                            - ReadWriteOnce
+                          resources:
+                            requests:
+                              storage: 20Gi
+                
+                alertmanager:
+                  enabled: true
+                
+                  alertmanagerSpec:
+                    replicas: 1
+                    retention: 48h
+                
+                    resources:
+                      requests:
+                        cpu: 100m
+                        memory: 128Mi
+                      limits:
+                        cpu: 500m
+                        memory: 512Mi
+                
+                    storage:
+                      volumeClaimTemplate:
+                        spec:
+                          accessModes:
+                            - ReadWriteOnce
+                          resources:
+                            requests:
+                              storage: 5Gi
+                
+                grafana:
+                  enabled: true
+                
+                  replicas: 1
+                
+                  resources:
+                    requests:
+                      cpu: 100m
+                      memory: 256Mi
+                    limits:
+                      cpu: 500m
+                      memory: 512Mi
+                
+                  persistence:
+                    enabled: true
+                    type: sts
+                    accessModes:
+                      - ReadWriteOnce
+                    size: 5Gi
+                
+                defaultRules:
+                  create: true
+            EOT,
+        ]
+      + verify                     = false
+      + version                    = "91.5.1"
+      + wait                       = true
+      + wait_for_jobs              = false
+    }
+
+  # module.observability.helm_release.opentelemetry_collector will be created
+  + resource "helm_release" "opentelemetry_collector" {
+      + atomic                     = true
+      + chart                      = "opentelemetry-collector"
+      + cleanup_on_fail            = false
+      + create_namespace           = true
+      + dependency_update          = false
+      + disable_crd_hooks          = false
+      + disable_openapi_validation = false
+      + disable_webhooks           = false
+      + force_update               = false
+      + id                         = (known after apply)
+      + lint                       = false
+      + max_history                = 0
+      + metadata                   = (known after apply)
+      + name                       = "opentelemetry-collector"
+      + namespace                  = "monitoring"
+      + pass_credentials           = false
+      + recreate_pods              = false
+      + render_subchart_notes      = true
+      + replace                    = false
+      + repository                 = "https://open-telemetry.github.io/opentelemetry-helm-charts"
+      + reset_values               = false
+      + reuse_values               = false
+      + set_wo                     = (write-only attribute)
+      + skip_crds                  = false
+      + status                     = "deployed"
+      + take_ownership             = false
+      + timeout                    = 900
+      + upgrade_install            = false
+      + values                     = [
+          + <<-EOT
+                mode: deployment
+                
+                image:
+                  repository: otel/opentelemetry-collector-k8s
+                  tag: "0.161.0"
+                
+                command:
+                  name: otelcol-k8s
+                
+                resources:
+                  requests:
+                    cpu: 100m
+                    memory: 128Mi
+                  limits:
+                    cpu: 500m
+                    memory: 512Mi
+                
+                config:
+                  extensions:
+                    health_check:
+                      endpoint: ${env:MY_POD_IP}:13133
+                
+                  receivers:
+                    otlp:
+                      protocols:
+                        grpc:
+                          endpoint: ${env:MY_POD_IP}:4317
+                        http:
+                          endpoint: ${env:MY_POD_IP}:4318
+                
+                  processors:
+                    memory_limiter:
+                      check_interval: 5s
+                      limit_percentage: 80
+                      spike_limit_percentage: 25
+                
+                    batch: {}
+                
+                  exporters:
+                    debug:
+                      verbosity: basic
+                
+                  service:
+                    extensions:
+                      - health_check
+                
+                    pipelines:
+                      traces:
+                        receivers:
+                          - otlp
+                        processors:
+                          - memory_limiter
+                          - batch
+                        exporters:
+                          - debug
+            EOT,
+        ]
+      + verify                     = false
+      + version                    = "0.173.1"
+      + wait                       = true
+      + wait_for_jobs              = false
+    }
+
+  # module.rds.aws_db_instance.nexpay_postgres will be created
+  + resource "aws_db_instance" "nexpay_postgres" {
+      + address                               = (known after apply)
+      + allocated_storage                     = 50
+      + apply_immediately                     = false
+      + arn                                   = (known after apply)
+      + auto_minor_version_upgrade            = true
+      + availability_zone                     = (known after apply)
+      + backup_retention_period               = 7
+      + backup_target                         = (known after apply)
+      + backup_window                         = (known after apply)
+      + ca_cert_identifier                    = (known after apply)
+      + character_set_name                    = (known after apply)
+      + copy_tags_to_snapshot                 = false
+      + database_insights_mode                = (known after apply)
+      + db_name                               = "nexpay"
+      + db_subnet_group_name                  = "nexpay-dev-postgres-subnet-group"
+      + dedicated_log_volume                  = false
+      + delete_automated_backups              = true
+      + domain_fqdn                           = (known after apply)
+      + endpoint                              = (known after apply)
+      + engine                                = "postgres"
+      + engine_lifecycle_support              = "open-source-rds-extended-support-disabled"
+      + engine_version                        = "18.6"
+      + engine_version_actual                 = (known after apply)
+      + hosted_zone_id                        = (known after apply)
+      + id                                    = (known after apply)
+      + identifier                            = "nexpay-dev-postgres"
+      + identifier_prefix                     = (known after apply)
+      + instance_class                        = "db.t4g.medium"
+      + iops                                  = (known after apply)
+      + kms_key_id                            = (known after apply)
+      + latest_restorable_time                = (known after apply)
+      + license_model                         = (known after apply)
+      + listener_endpoint                     = (known after apply)
+      + maintenance_window                    = (known after apply)
+      + manage_master_user_password           = true
+      + master_user_secret                    = (known after apply)
+      + master_user_secret_kms_key_id         = (known after apply)
+      + monitoring_interval                   = 0
+      + monitoring_role_arn                   = (known after apply)
+      + multi_az                              = true
+      + nchar_character_set_name              = (known after apply)
+      + network_type                          = (known after apply)
+      + option_group_name                     = (known after apply)
+      + parameter_group_name                  = (known after apply)
+      + password_wo                           = (write-only attribute)
+      + performance_insights_enabled          = false
+      + performance_insights_kms_key_id       = (known after apply)
+      + performance_insights_retention_period = (known after apply)
+      + port                                  = (known after apply)
+      + publicly_accessible                   = false
+      + region                                = "us-east-1"
+      + replica_mode                          = (known after apply)
+      + replicas                              = (known after apply)
+      + resource_id                           = (known after apply)
+      + skip_final_snapshot                   = false
+      + snapshot_identifier                   = (known after apply)
+      + status                                = (known after apply)
+      + storage_encrypted                     = true
+      + storage_throughput                    = (known after apply)
+      + storage_type                          = "gp3"
+      + tags                                  = {
+          + "Environment" = "dev"
+          + "ManagedBy"   = "terraform"
+          + "Name"        = "nexpay-dev-postgres"
+          + "Project"     = "nexpay"
+        }
+      + tags_all                              = {
+          + "Environment" = "dev"
+          + "ManagedBy"   = "terraform"
+          + "Name"        = "nexpay-dev-postgres"
+          + "Project"     = "nexpay"
+        }
+      + timezone                              = (known after apply)
+      + upgrade_rollout_order                 = (known after apply)
+      + username                              = "nexpay_admin"
+      + vpc_security_group_ids                = (known after apply)
+    }
+
+  # module.rds.aws_db_subnet_group.nexpay_db will be created
+  + resource "aws_db_subnet_group" "nexpay_db" {
+      + arn                     = (known after apply)
+      + description             = "DB subnet group for the NexPay database"
+      + id                      = (known after apply)
+      + name                    = "nexpay-dev-postgres-subnet-group"
+      + name_prefix             = (known after apply)
+      + region                  = "us-east-1"
+      + subnet_ids              = (known after apply)
+      + supported_network_types = (known after apply)
+      + tags                    = {
+          + "Environment" = "dev"
+          + "ManagedBy"   = "terraform"
+          + "Name"        = "nexpay-dev-postgres-subnet-group"
+          + "Project"     = "nexpay"
+        }
+      + tags_all                = {
+          + "Environment" = "dev"
+          + "ManagedBy"   = "terraform"
+          + "Name"        = "nexpay-dev-postgres-subnet-group"
+          + "Project"     = "nexpay"
+        }
+      + vpc_id                  = (known after apply)
+    }
+
+  # module.secrets.data.aws_iam_policy_document.pod_identity_assume_role will be read during apply
+  # (depends on a resource or a module with changes pending)
+ <= data "aws_iam_policy_document" "pod_identity_assume_role" {
+      + id            = (known after apply)
+      + json          = (known after apply)
+      + minified_json = (known after apply)
+
+      + statement {
+          + actions = [
+              + "sts:AssumeRole",
+              + "sts:TagSession",
+            ]
+          + effect  = "Allow"
+
+          + principals {
+              + identifiers = [
+                  + "pods.eks.amazonaws.com",
+                ]
+              + type        = "Service"
+            }
+        }
+    }
+
+  # module.secrets.data.aws_iam_policy_document.secrets_manager_access will be read during apply
+  # (config refers to values not yet known)
+ <= data "aws_iam_policy_document" "secrets_manager_access" {
+      + id            = (known after apply)
+      + json          = (known after apply)
+      + minified_json = (known after apply)
+
+      + statement {
+          + actions   = [
+              + "secretsmanager:DescribeSecret",
+              + "secretsmanager:GetResourcePolicy",
+              + "secretsmanager:GetSecretValue",
+              + "secretsmanager:ListSecretVersionIds",
+            ]
+          + effect    = "Allow"
+          + resources = [
+              + (known after apply),
+            ]
+        }
+    }
+
+  # module.secrets.aws_eks_pod_identity_association.external_secrets will be created
+  + resource "aws_eks_pod_identity_association" "external_secrets" {
+      + association_arn      = (known after apply)
+      + association_id       = (known after apply)
+      + cluster_name         = "nexpay-dev-eks"
+      + disable_session_tags = false
+      + external_id          = (known after apply)
+      + id                   = (known after apply)
+      + namespace            = "external-secrets"
+      + region               = "us-east-1"
+      + role_arn             = (known after apply)
+      + service_account      = "external-secrets"
+      + tags_all             = {}
+    }
+
+  # module.secrets.aws_iam_role.external_secrets will be created
+  + resource "aws_iam_role" "external_secrets" {
+      + arn                   = (known after apply)
+      + assume_role_policy    = (known after apply)
+      + create_date           = (known after apply)
+      + force_detach_policies = false
+      + id                    = (known after apply)
+      + managed_policy_arns   = (known after apply)
+      + max_session_duration  = 3600
+      + name                  = "nexpay-external-secrets"
+      + name_prefix           = (known after apply)
+      + path                  = "/"
+      + tags                  = {
+          + "Component"   = "external-secrets"
+          + "Environment" = "dev"
+          + "ManagedBy"   = "terraform"
+          + "Project"     = "nexpay"
+        }
+      + tags_all              = {
+          + "Component"   = "external-secrets"
+          + "Environment" = "dev"
+          + "ManagedBy"   = "terraform"
+          + "Project"     = "nexpay"
+        }
+      + unique_id             = (known after apply)
+
+      + inline_policy (known after apply)
+    }
+
+  # module.secrets.aws_iam_role_policy.external_secrets will be created
+  + resource "aws_iam_role_policy" "external_secrets" {
+      + id          = (known after apply)
+      + name        = "nexpay-external-secrets-secrets-manager"
+      + name_prefix = (known after apply)
+      + policy      = (known after apply)
+      + role        = (known after apply)
+    }
+
+  # module.secrets.aws_secretsmanager_secret.github_app will be created
+  + resource "aws_secretsmanager_secret" "github_app" {
+      + arn                            = (known after apply)
+      + description                    = "NexPay GitHub App credentials for Argo CD repository access"
+      + force_overwrite_replica_secret = false
+      + id                             = (known after apply)
+      + name                           = "nexpay/dev/argocd/github-app"
+      + name_prefix                    = (known after apply)
+      + policy                         = (known after apply)
+      + recovery_window_in_days        = 30
+      + region                         = "us-east-1"
+      + tags                           = {
+          + "Component"   = "argocd"
+          + "Environment" = "dev"
+          + "ManagedBy"   = "terraform"
+          + "Project"     = "nexpay"
+        }
+      + tags_all                       = {
+          + "Component"   = "argocd"
+          + "Environment" = "dev"
+          + "ManagedBy"   = "terraform"
+          + "Project"     = "nexpay"
+        }
+    }
+
+  # module.secrets.helm_release.external_secrets will be created
+  + resource "helm_release" "external_secrets" {
+      + atomic                     = true
+      + chart                      = "external-secrets"
+      + cleanup_on_fail            = false
+      + create_namespace           = true
+      + dependency_update          = false
+      + disable_crd_hooks          = false
+      + disable_openapi_validation = false
+      + disable_webhooks           = false
+      + force_update               = false
+      + id                         = (known after apply)
+      + lint                       = false
+      + max_history                = 0
+      + metadata                   = (known after apply)
+      + name                       = "external-secrets"
+      + namespace                  = "external-secrets"
+      + pass_credentials           = false
+      + recreate_pods              = false
+      + render_subchart_notes      = true
+      + replace                    = false
+      + repository                 = "https://charts.external-secrets.io"
+      + reset_values               = false
+      + reuse_values               = false
+      + set                        = [
+          + {
+              + name  = "installCRDs"
+              + value = "true"
+                # (1 unchanged attribute hidden)
+            },
+          + {
+              + name  = "serviceAccount.create"
+              + value = "true"
+                # (1 unchanged attribute hidden)
+            },
+          + {
+              + name  = "serviceAccount.name"
+              + value = "external-secrets"
+                # (1 unchanged attribute hidden)
+            },
+        ]
+      + set_wo                     = (write-only attribute)
+      + skip_crds                  = false
+      + status                     = "deployed"
+      + take_ownership             = false
+      + timeout                    = 900
+      + upgrade_install            = false
+      + values                     = [
+          + <<-EOT
+                "extraObjects":
+                - "apiVersion": "external-secrets.io/v1"
+                  "kind": "SecretStore"
+                  "metadata":
+                    "name": "aws-secretsmanager"
+                    "namespace": "argocd"
+                  "spec":
+                    "provider":
+                      "aws":
+                        "region": "us-east-1"
+                        "service": "SecretsManager"
+                - "apiVersion": "external-secrets.io/v1"
+                  "kind": "ExternalSecret"
+                  "metadata":
+                    "name": "github-repository"
+                    "namespace": "argocd"
+                  "spec":
+                    "data":
+                    - "remoteRef":
+                        "key": "nexpay/dev/argocd/github-app"
+                        "property": "githubAppID"
+                      "secretKey": "githubAppID"
+                    - "remoteRef":
+                        "key": "nexpay/dev/argocd/github-app"
+                        "property": "githubAppInstallationID"
+                      "secretKey": "githubAppInstallationID"
+                    - "remoteRef":
+                        "key": "nexpay/dev/argocd/github-app"
+                        "property": "githubAppPrivateKey"
+                      "secretKey": "githubAppPrivateKey"
+                    "refreshInterval": "1h"
+                    "secretStoreRef":
+                      "kind": "SecretStore"
+                      "name": "aws-secretsmanager"
+                    "target":
+                      "creationPolicy": "Owner"
+                      "name": "github-repository"
+                      "template":
+                        "data":
+                          "githubAppID": "{{ .githubAppID }}"
+                          "githubAppInstallationID": "{{ .githubAppInstallationID }}"
+                          "githubAppPrivateKey": "{{ .githubAppPrivateKey }}"
+                          "type": "git"
+                          "url": "https://github.com/SilasMesmo/NexPay-System"
+                        "metadata":
+                          "labels":
+                            "argocd.argoproj.io/secret-type": "repository"
+                        "type": "Opaque"
+            EOT,
+        ]
+      + verify                     = false
+      + version                    = "2.11.0"
+      + wait                       = true
+      + wait_for_jobs              = false
+    }
+
+  # module.vpc.data.aws_iam_policy_document.sqs_vpc_endpoint will be read during apply
+  # (config refers to values not yet known)
+ <= data "aws_iam_policy_document" "sqs_vpc_endpoint" {
+      + id            = (known after apply)
+      + json          = (known after apply)
+      + minified_json = (known after apply)
+
+      + statement {
+          + actions   = [
+              + "sqs:ChangeMessageVisibility",
+              + "sqs:ChangeMessageVisibilityBatch",
+              + "sqs:DeleteMessage",
+              + "sqs:DeleteMessageBatch",
+              + "sqs:GetQueueAttributes",
+              + "sqs:GetQueueUrl",
+              + "sqs:ReceiveMessage",
+              + "sqs:SendMessage",
+              + "sqs:SendMessageBatch",
+            ]
+          + effect    = "Allow"
+          + resources = [
+              + (known after apply),
+              + (known after apply),
+              + (known after apply),
+            ]
+          + sid       = "AllowSQSAccess"
+
+          + principals {
+              + identifiers = [
+                  + "*",
+                ]
+              + type        = "AWS"
+            }
+        }
+    }
+
+  # module.vpc.aws_eip.nat_ip["public_a"] will be created
+  + resource "aws_eip" "nat_ip" {
+      + allocation_id        = (known after apply)
+      + arn                  = (known after apply)
+      + association_id       = (known after apply)
+      + carrier_ip           = (known after apply)
+      + customer_owned_ip    = (known after apply)
+      + domain               = "vpc"
+      + id                   = (known after apply)
+      + instance             = (known after apply)
+      + ipam_pool_id         = (known after apply)
+      + network_border_group = (known after apply)
+      + network_interface    = (known after apply)
+      + private_dns          = (known after apply)
+      + private_ip           = (known after apply)
+      + ptr_record           = (known after apply)
+      + public_dns           = (known after apply)
+      + public_ip            = (known after apply)
+      + public_ipv4_pool     = (known after apply)
+      + region               = "us-east-1"
+      + tags                 = {
+          + "Environment" = "dev"
+          + "ManagedBy"   = "terraform"
+          + "Name"        = "nexpay-dev-vpc-public_a-nat-eip"
+          + "Project"     = "nexpay"
+          + "Tier"        = "public"
+        }
+      + tags_all             = {
+          + "Environment" = "dev"
+          + "ManagedBy"   = "terraform"
+          + "Name"        = "nexpay-dev-vpc-public_a-nat-eip"
+          + "Project"     = "nexpay"
+          + "Tier"        = "public"
+        }
+    }
+
+  # module.vpc.aws_eip.nat_ip["public_b"] will be created
+  + resource "aws_eip" "nat_ip" {
+      + allocation_id        = (known after apply)
+      + arn                  = (known after apply)
+      + association_id       = (known after apply)
+      + carrier_ip           = (known after apply)
+      + customer_owned_ip    = (known after apply)
+      + domain               = "vpc"
+      + id                   = (known after apply)
+      + instance             = (known after apply)
+      + ipam_pool_id         = (known after apply)
+      + network_border_group = (known after apply)
+      + network_interface    = (known after apply)
+      + private_dns          = (known after apply)
+      + private_ip           = (known after apply)
+      + ptr_record           = (known after apply)
+      + public_dns           = (known after apply)
+      + public_ip            = (known after apply)
+      + public_ipv4_pool     = (known after apply)
+      + region               = "us-east-1"
+      + tags                 = {
+          + "Environment" = "dev"
+          + "ManagedBy"   = "terraform"
+          + "Name"        = "nexpay-dev-vpc-public_b-nat-eip"
+          + "Project"     = "nexpay"
+          + "Tier"        = "public"
+        }
+      + tags_all             = {
+          + "Environment" = "dev"
+          + "ManagedBy"   = "terraform"
+          + "Name"        = "nexpay-dev-vpc-public_b-nat-eip"
+          + "Project"     = "nexpay"
+          + "Tier"        = "public"
+        }
+    }
+
+  # module.vpc.aws_internet_gateway.nexpay_igw will be created
+  + resource "aws_internet_gateway" "nexpay_igw" {
+      + arn      = (known after apply)
+      + id       = (known after apply)
+      + owner_id = (known after apply)
+      + region   = "us-east-1"
+      + tags     = {
+          + "Environment" = "dev"
+          + "ManagedBy"   = "terraform"
+          + "Name"        = "nexpay-dev-vpc-igw"
+          + "Project"     = "nexpay"
+        }
+      + tags_all = {
+          + "Environment" = "dev"
+          + "ManagedBy"   = "terraform"
+          + "Name"        = "nexpay-dev-vpc-igw"
+          + "Project"     = "nexpay"
+        }
+      + vpc_id   = (known after apply)
+    }
+
+  # module.vpc.aws_nat_gateway.public_nat["public_a"] will be created
+  + resource "aws_nat_gateway" "public_nat" {
+      + allocation_id                      = (known after apply)
+      + association_id                     = (known after apply)
+      + auto_provision_zones               = (known after apply)
+      + auto_scaling_ips                   = (known after apply)
+      + availability_mode                  = (known after apply)
+      + connectivity_type                  = "public"
+      + id                                 = (known after apply)
+      + network_interface_id               = (known after apply)
+      + private_ip                         = (known after apply)
+      + public_ip                          = (known after apply)
+      + region                             = "us-east-1"
+      + regional_nat_gateway_address       = (known after apply)
+      + regional_nat_gateway_auto_mode     = (known after apply)
+      + route_table_id                     = (known after apply)
+      + secondary_allocation_ids           = (known after apply)
+      + secondary_private_ip_address_count = (known after apply)
+      + secondary_private_ip_addresses     = (known after apply)
+      + subnet_id                          = (known after apply)
+      + tags                               = {
+          + "Environment" = "dev"
+          + "ManagedBy"   = "terraform"
+          + "Name"        = "nexpay-dev-vpc-public_a-nat"
+          + "Project"     = "nexpay"
+          + "Tier"        = "public"
+        }
+      + tags_all                           = {
+          + "Environment" = "dev"
+          + "ManagedBy"   = "terraform"
+          + "Name"        = "nexpay-dev-vpc-public_a-nat"
+          + "Project"     = "nexpay"
+          + "Tier"        = "public"
+        }
+      + vpc_id                             = (known after apply)
+    }
+
+  # module.vpc.aws_nat_gateway.public_nat["public_b"] will be created
+  + resource "aws_nat_gateway" "public_nat" {
+      + allocation_id                      = (known after apply)
+      + association_id                     = (known after apply)
+      + auto_provision_zones               = (known after apply)
+      + auto_scaling_ips                   = (known after apply)
+      + availability_mode                  = (known after apply)
+      + connectivity_type                  = "public"
+      + id                                 = (known after apply)
+      + network_interface_id               = (known after apply)
+      + private_ip                         = (known after apply)
+      + public_ip                          = (known after apply)
+      + region                             = "us-east-1"
+      + regional_nat_gateway_address       = (known after apply)
+      + regional_nat_gateway_auto_mode     = (known after apply)
+      + route_table_id                     = (known after apply)
+      + secondary_allocation_ids           = (known after apply)
+      + secondary_private_ip_address_count = (known after apply)
+      + secondary_private_ip_addresses     = (known after apply)
+      + subnet_id                          = (known after apply)
+      + tags                               = {
+          + "Environment" = "dev"
+          + "ManagedBy"   = "terraform"
+          + "Name"        = "nexpay-dev-vpc-public_b-nat"
+          + "Project"     = "nexpay"
+          + "Tier"        = "public"
+        }
+      + tags_all                           = {
+          + "Environment" = "dev"
+          + "ManagedBy"   = "terraform"
+          + "Name"        = "nexpay-dev-vpc-public_b-nat"
+          + "Project"     = "nexpay"
+          + "Tier"        = "public"
+        }
+      + vpc_id                             = (known after apply)
+    }
+
+  # module.vpc.aws_route_table.private_app_rt["private_app_a"] will be created
+  + resource "aws_route_table" "private_app_rt" {
+      + arn              = (known after apply)
+      + id               = (known after apply)
+      + owner_id         = (known after apply)
+      + propagating_vgws = (known after apply)
+      + region           = "us-east-1"
+      + route            = [
+          + {
+              + cidr_block                 = "0.0.0.0/0"
+              + nat_gateway_id             = (known after apply)
+                # (12 unchanged attributes hidden)
+            },
+        ]
+      + tags             = {
+          + "Environment" = "dev"
+          + "ManagedBy"   = "terraform"
+          + "Name"        = "nexpay-dev-vpc-private_app_a-rt"
+          + "Project"     = "nexpay"
+          + "Tier"        = "private-app"
+        }
+      + tags_all         = {
+          + "Environment" = "dev"
+          + "ManagedBy"   = "terraform"
+          + "Name"        = "nexpay-dev-vpc-private_app_a-rt"
+          + "Project"     = "nexpay"
+          + "Tier"        = "private-app"
+        }
+      + vpc_id           = (known after apply)
+    }
+
+  # module.vpc.aws_route_table.private_app_rt["private_app_b"] will be created
+  + resource "aws_route_table" "private_app_rt" {
+      + arn              = (known after apply)
+      + id               = (known after apply)
+      + owner_id         = (known after apply)
+      + propagating_vgws = (known after apply)
+      + region           = "us-east-1"
+      + route            = [
+          + {
+              + cidr_block                 = "0.0.0.0/0"
+              + nat_gateway_id             = (known after apply)
+                # (12 unchanged attributes hidden)
+            },
+        ]
+      + tags             = {
+          + "Environment" = "dev"
+          + "ManagedBy"   = "terraform"
+          + "Name"        = "nexpay-dev-vpc-private_app_b-rt"
+          + "Project"     = "nexpay"
+          + "Tier"        = "private-app"
+        }
+      + tags_all         = {
+          + "Environment" = "dev"
+          + "ManagedBy"   = "terraform"
+          + "Name"        = "nexpay-dev-vpc-private_app_b-rt"
+          + "Project"     = "nexpay"
+          + "Tier"        = "private-app"
+        }
+      + vpc_id           = (known after apply)
+    }
+
+  # module.vpc.aws_route_table.private_data_rt["private_data_a"] will be created
+  + resource "aws_route_table" "private_data_rt" {
+      + arn              = (known after apply)
+      + id               = (known after apply)
+      + owner_id         = (known after apply)
+      + propagating_vgws = (known after apply)
+      + region           = "us-east-1"
+      + route            = (known after apply)
+      + tags             = {
+          + "Environment" = "dev"
+          + "ManagedBy"   = "terraform"
+          + "Name"        = "nexpay-dev-vpc-private_data_a-rt"
+          + "Project"     = "nexpay"
+          + "Tier"        = "private-data"
+        }
+      + tags_all         = {
+          + "Environment" = "dev"
+          + "ManagedBy"   = "terraform"
+          + "Name"        = "nexpay-dev-vpc-private_data_a-rt"
+          + "Project"     = "nexpay"
+          + "Tier"        = "private-data"
+        }
+      + vpc_id           = (known after apply)
+    }
+
+  # module.vpc.aws_route_table.private_data_rt["private_data_b"] will be created
+  + resource "aws_route_table" "private_data_rt" {
+      + arn              = (known after apply)
+      + id               = (known after apply)
+      + owner_id         = (known after apply)
+      + propagating_vgws = (known after apply)
+      + region           = "us-east-1"
+      + route            = (known after apply)
+      + tags             = {
+          + "Environment" = "dev"
+          + "ManagedBy"   = "terraform"
+          + "Name"        = "nexpay-dev-vpc-private_data_b-rt"
+          + "Project"     = "nexpay"
+          + "Tier"        = "private-data"
+        }
+      + tags_all         = {
+          + "Environment" = "dev"
+          + "ManagedBy"   = "terraform"
+          + "Name"        = "nexpay-dev-vpc-private_data_b-rt"
+          + "Project"     = "nexpay"
+          + "Tier"        = "private-data"
+        }
+      + vpc_id           = (known after apply)
+    }
+
+  # module.vpc.aws_route_table.public_rt will be created
+  + resource "aws_route_table" "public_rt" {
+      + arn              = (known after apply)
+      + id               = (known after apply)
+      + owner_id         = (known after apply)
+      + propagating_vgws = (known after apply)
+      + region           = "us-east-1"
+      + route            = [
+          + {
+              + cidr_block                 = "0.0.0.0/0"
+              + gateway_id                 = (known after apply)
+                # (12 unchanged attributes hidden)
+            },
+        ]
+      + tags             = {
+          + "Environment" = "dev"
+          + "ManagedBy"   = "terraform"
+          + "Name"        = "nexpay-dev-vpc-public-rt"
+          + "Project"     = "nexpay"
+          + "Tier"        = "public"
+        }
+      + tags_all         = {
+          + "Environment" = "dev"
+          + "ManagedBy"   = "terraform"
+          + "Name"        = "nexpay-dev-vpc-public-rt"
+          + "Project"     = "nexpay"
+          + "Tier"        = "public"
+        }
+      + vpc_id           = (known after apply)
+    }
+
+  # module.vpc.aws_route_table_association.private["private_app_a"] will be created
+  + resource "aws_route_table_association" "private" {
+      + id             = (known after apply)
+      + region         = "us-east-1"
+      + route_table_id = (known after apply)
+      + subnet_id      = (known after apply)
+    }
+
+  # module.vpc.aws_route_table_association.private["private_app_b"] will be created
+  + resource "aws_route_table_association" "private" {
+      + id             = (known after apply)
+      + region         = "us-east-1"
+      + route_table_id = (known after apply)
+      + subnet_id      = (known after apply)
+    }
+
+  # module.vpc.aws_route_table_association.private_data["private_data_a"] will be created
+  + resource "aws_route_table_association" "private_data" {
+      + id             = (known after apply)
+      + region         = "us-east-1"
+      + route_table_id = (known after apply)
+      + subnet_id      = (known after apply)
+    }
+
+  # module.vpc.aws_route_table_association.private_data["private_data_b"] will be created
+  + resource "aws_route_table_association" "private_data" {
+      + id             = (known after apply)
+      + region         = "us-east-1"
+      + route_table_id = (known after apply)
+      + subnet_id      = (known after apply)
+    }
+
+  # module.vpc.aws_route_table_association.public["public_a"] will be created
+  + resource "aws_route_table_association" "public" {
+      + id             = (known after apply)
+      + region         = "us-east-1"
+      + route_table_id = (known after apply)
+      + subnet_id      = (known after apply)
+    }
+
+  # module.vpc.aws_route_table_association.public["public_b"] will be created
+  + resource "aws_route_table_association" "public" {
+      + id             = (known after apply)
+      + region         = "us-east-1"
+      + route_table_id = (known after apply)
+      + subnet_id      = (known after apply)
+    }
+
+  # module.vpc.aws_security_group.rds will be created
+  + resource "aws_security_group" "rds" {
+      + arn                    = (known after apply)
+      + description            = "Security group for NexPay RDS PostgreSQL"
+      + egress                 = (known after apply)
+      + id                     = (known after apply)
+      + ingress                = (known after apply)
+      + name                   = "nexpay-dev-vpc-rds-sg"
+      + name_prefix            = (known after apply)
+      + owner_id               = (known after apply)
+      + region                 = "us-east-1"
+      + revoke_rules_on_delete = false
+      + tags                   = {
+          + "Environment" = "dev"
+          + "ManagedBy"   = "terraform"
+          + "Name"        = "nexpay-dev-vpc-rds-sg"
+          + "Project"     = "nexpay"
+          + "Tier"        = "private-data"
+        }
+      + tags_all               = {
+          + "Environment" = "dev"
+          + "ManagedBy"   = "terraform"
+          + "Name"        = "nexpay-dev-vpc-rds-sg"
+          + "Project"     = "nexpay"
+          + "Tier"        = "private-data"
+        }
+      + vpc_id                 = (known after apply)
+    }
+
+  # module.vpc.aws_security_group.redis will be created
+  + resource "aws_security_group" "redis" {
+      + arn                    = (known after apply)
+      + description            = "Security group for NexPay Redis cache"
+      + egress                 = (known after apply)
+      + id                     = (known after apply)
+      + ingress                = (known after apply)
+      + name                   = "nexpay-dev-vpc-redis-sg"
+      + name_prefix            = (known after apply)
+      + owner_id               = (known after apply)
+      + region                 = "us-east-1"
+      + revoke_rules_on_delete = false
+      + tags                   = {
+          + "Environment" = "dev"
+          + "ManagedBy"   = "terraform"
+          + "Name"        = "nexpay-dev-vpc-redis-sg"
+          + "Project"     = "nexpay"
+          + "Tier"        = "private-data"
+        }
+      + tags_all               = {
+          + "Environment" = "dev"
+          + "ManagedBy"   = "terraform"
+          + "Name"        = "nexpay-dev-vpc-redis-sg"
+          + "Project"     = "nexpay"
+          + "Tier"        = "private-data"
+        }
+      + vpc_id                 = (known after apply)
+    }
+
+  # module.vpc.aws_security_group.vpc_endpoints will be created
+  + resource "aws_security_group" "vpc_endpoints" {
+      + arn                    = (known after apply)
+      + description            = "Security group para os VPC Endpoints (SQS, ECR, etc)"
+      + egress                 = (known after apply)
+      + id                     = (known after apply)
+      + ingress                = (known after apply)
+      + name                   = "nexpay-dev-vpc-vpce-sg"
+      + name_prefix            = (known after apply)
+      + owner_id               = (known after apply)
+      + region                 = "us-east-1"
+      + revoke_rules_on_delete = false
+      + tags                   = {
+          + "Environment" = "dev"
+          + "ManagedBy"   = "terraform"
+          + "Name"        = "nexpay-dev-vpc-vpce-sg"
+          + "Project"     = "nexpay"
+          + "Tier"        = "private-app"
+        }
+      + tags_all               = {
+          + "Environment" = "dev"
+          + "ManagedBy"   = "terraform"
+          + "Name"        = "nexpay-dev-vpc-vpce-sg"
+          + "Project"     = "nexpay"
+          + "Tier"        = "private-app"
+        }
+      + vpc_id                 = (known after apply)
+    }
+
+  # module.vpc.aws_subnet.private_app["private_app_a"] will be created
+  + resource "aws_subnet" "private_app" {
+      + arn                                            = (known after apply)
+      + assign_ipv6_address_on_creation                = false
+      + availability_zone                              = "us-east-1a"
+      + availability_zone_id                           = (known after apply)
+      + cidr_block                                     = "10.0.11.0/24"
+      + enable_dns64                                   = false
+      + enable_resource_name_dns_a_record_on_launch    = false
+      + enable_resource_name_dns_aaaa_record_on_launch = false
+      + id                                             = (known after apply)
+      + ipv6_cidr_block                                = (known after apply)
+      + ipv6_cidr_block_association_id                 = (known after apply)
+      + ipv6_native                                    = false
+      + map_public_ip_on_launch                        = false
+      + owner_id                                       = (known after apply)
+      + private_dns_hostname_type_on_launch            = (known after apply)
+      + region                                         = "us-east-1"
+      + tags                                           = {
+          + "Environment" = "dev"
+          + "ManagedBy"   = "terraform"
+          + "Name"        = "nexpay-dev-vpc-private_app_a"
+          + "Project"     = "nexpay"
+          + "Tier"        = "private-app"
+        }
+      + tags_all                                       = {
+          + "Environment" = "dev"
+          + "ManagedBy"   = "terraform"
+          + "Name"        = "nexpay-dev-vpc-private_app_a"
+          + "Project"     = "nexpay"
+          + "Tier"        = "private-app"
+        }
+      + vpc_id                                         = (known after apply)
+    }
+
+  # module.vpc.aws_subnet.private_app["private_app_b"] will be created
+  + resource "aws_subnet" "private_app" {
+      + arn                                            = (known after apply)
+      + assign_ipv6_address_on_creation                = false
+      + availability_zone                              = "us-east-1b"
+      + availability_zone_id                           = (known after apply)
+      + cidr_block                                     = "10.0.12.0/24"
+      + enable_dns64                                   = false
+      + enable_resource_name_dns_a_record_on_launch    = false
+      + enable_resource_name_dns_aaaa_record_on_launch = false
+      + id                                             = (known after apply)
+      + ipv6_cidr_block                                = (known after apply)
+      + ipv6_cidr_block_association_id                 = (known after apply)
+      + ipv6_native                                    = false
+      + map_public_ip_on_launch                        = false
+      + owner_id                                       = (known after apply)
+      + private_dns_hostname_type_on_launch            = (known after apply)
+      + region                                         = "us-east-1"
+      + tags                                           = {
+          + "Environment" = "dev"
+          + "ManagedBy"   = "terraform"
+          + "Name"        = "nexpay-dev-vpc-private_app_b"
+          + "Project"     = "nexpay"
+          + "Tier"        = "private-app"
+        }
+      + tags_all                                       = {
+          + "Environment" = "dev"
+          + "ManagedBy"   = "terraform"
+          + "Name"        = "nexpay-dev-vpc-private_app_b"
+          + "Project"     = "nexpay"
+          + "Tier"        = "private-app"
+        }
+      + vpc_id                                         = (known after apply)
+    }
+
+  # module.vpc.aws_subnet.private_data["private_data_a"] will be created
+  + resource "aws_subnet" "private_data" {
+      + arn                                            = (known after apply)
+      + assign_ipv6_address_on_creation                = false
+      + availability_zone                              = "us-east-1a"
+      + availability_zone_id                           = (known after apply)
+      + cidr_block                                     = "10.0.21.0/24"
+      + enable_dns64                                   = false
+      + enable_resource_name_dns_a_record_on_launch    = false
+      + enable_resource_name_dns_aaaa_record_on_launch = false
+      + id                                             = (known after apply)
+      + ipv6_cidr_block                                = (known after apply)
+      + ipv6_cidr_block_association_id                 = (known after apply)
+      + ipv6_native                                    = false
+      + map_public_ip_on_launch                        = false
+      + owner_id                                       = (known after apply)
+      + private_dns_hostname_type_on_launch            = (known after apply)
+      + region                                         = "us-east-1"
+      + tags                                           = {
+          + "Environment" = "dev"
+          + "ManagedBy"   = "terraform"
+          + "Name"        = "nexpay-dev-vpc-private_data_a"
+          + "Project"     = "nexpay"
+          + "Tier"        = "private-data"
+        }
+      + tags_all                                       = {
+          + "Environment" = "dev"
+          + "ManagedBy"   = "terraform"
+          + "Name"        = "nexpay-dev-vpc-private_data_a"
+          + "Project"     = "nexpay"
+          + "Tier"        = "private-data"
+        }
+      + vpc_id                                         = (known after apply)
+    }
+
+  # module.vpc.aws_subnet.private_data["private_data_b"] will be created
+  + resource "aws_subnet" "private_data" {
+      + arn                                            = (known after apply)
+      + assign_ipv6_address_on_creation                = false
+      + availability_zone                              = "us-east-1b"
+      + availability_zone_id                           = (known after apply)
+      + cidr_block                                     = "10.0.22.0/24"
+      + enable_dns64                                   = false
+      + enable_resource_name_dns_a_record_on_launch    = false
+      + enable_resource_name_dns_aaaa_record_on_launch = false
+      + id                                             = (known after apply)
+      + ipv6_cidr_block                                = (known after apply)
+      + ipv6_cidr_block_association_id                 = (known after apply)
+      + ipv6_native                                    = false
+      + map_public_ip_on_launch                        = false
+      + owner_id                                       = (known after apply)
+      + private_dns_hostname_type_on_launch            = (known after apply)
+      + region                                         = "us-east-1"
+      + tags                                           = {
+          + "Environment" = "dev"
+          + "ManagedBy"   = "terraform"
+          + "Name"        = "nexpay-dev-vpc-private_data_b"
+          + "Project"     = "nexpay"
+          + "Tier"        = "private-data"
+        }
+      + tags_all                                       = {
+          + "Environment" = "dev"
+          + "ManagedBy"   = "terraform"
+          + "Name"        = "nexpay-dev-vpc-private_data_b"
+          + "Project"     = "nexpay"
+          + "Tier"        = "private-data"
+        }
+      + vpc_id                                         = (known after apply)
+    }
+
+  # module.vpc.aws_subnet.public["public_a"] will be created
+  + resource "aws_subnet" "public" {
+      + arn                                            = (known after apply)
+      + assign_ipv6_address_on_creation                = false
+      + availability_zone                              = "us-east-1a"
+      + availability_zone_id                           = (known after apply)
+      + cidr_block                                     = "10.0.1.0/24"
+      + enable_dns64                                   = false
+      + enable_resource_name_dns_a_record_on_launch    = false
+      + enable_resource_name_dns_aaaa_record_on_launch = false
+      + id                                             = (known after apply)
+      + ipv6_cidr_block                                = (known after apply)
+      + ipv6_cidr_block_association_id                 = (known after apply)
+      + ipv6_native                                    = false
+      + map_public_ip_on_launch                        = false
+      + owner_id                                       = (known after apply)
+      + private_dns_hostname_type_on_launch            = (known after apply)
+      + region                                         = "us-east-1"
+      + tags                                           = {
+          + "Environment" = "dev"
+          + "ManagedBy"   = "terraform"
+          + "Name"        = "nexpay-dev-vpc-public_a"
+          + "Project"     = "nexpay"
+          + "Tier"        = "public"
+        }
+      + tags_all                                       = {
+          + "Environment" = "dev"
+          + "ManagedBy"   = "terraform"
+          + "Name"        = "nexpay-dev-vpc-public_a"
+          + "Project"     = "nexpay"
+          + "Tier"        = "public"
+        }
+      + vpc_id                                         = (known after apply)
+    }
+
+  # module.vpc.aws_subnet.public["public_b"] will be created
+  + resource "aws_subnet" "public" {
+      + arn                                            = (known after apply)
+      + assign_ipv6_address_on_creation                = false
+      + availability_zone                              = "us-east-1b"
+      + availability_zone_id                           = (known after apply)
+      + cidr_block                                     = "10.0.2.0/24"
+      + enable_dns64                                   = false
+      + enable_resource_name_dns_a_record_on_launch    = false
+      + enable_resource_name_dns_aaaa_record_on_launch = false
+      + id                                             = (known after apply)
+      + ipv6_cidr_block                                = (known after apply)
+      + ipv6_cidr_block_association_id                 = (known after apply)
+      + ipv6_native                                    = false
+      + map_public_ip_on_launch                        = false
+      + owner_id                                       = (known after apply)
+      + private_dns_hostname_type_on_launch            = (known after apply)
+      + region                                         = "us-east-1"
+      + tags                                           = {
+          + "Environment" = "dev"
+          + "ManagedBy"   = "terraform"
+          + "Name"        = "nexpay-dev-vpc-public_b"
+          + "Project"     = "nexpay"
+          + "Tier"        = "public"
+        }
+      + tags_all                                       = {
+          + "Environment" = "dev"
+          + "ManagedBy"   = "terraform"
+          + "Name"        = "nexpay-dev-vpc-public_b"
+          + "Project"     = "nexpay"
+          + "Tier"        = "public"
+        }
+      + vpc_id                                         = (known after apply)
+    }
+
+  # module.vpc.aws_vpc.vpc_nexpay will be created
+  + resource "aws_vpc" "vpc_nexpay" {
+      + arn                                  = (known after apply)
+      + cidr_block                           = "10.0.0.0/16"
+      + default_network_acl_id               = (known after apply)
+      + default_route_table_id               = (known after apply)
+      + default_security_group_id            = (known after apply)
+      + dhcp_options_id                      = (known after apply)
+      + enable_dns_hostnames                 = true
+      + enable_dns_support                   = true
+      + enable_network_address_usage_metrics = (known after apply)
+      + id                                   = (known after apply)
+      + instance_tenancy                     = "default"
+      + ipv6_association_id                  = (known after apply)
+      + ipv6_cidr_block                      = (known after apply)
+      + ipv6_cidr_block_network_border_group = (known after apply)
+      + main_route_table_id                  = (known after apply)
+      + owner_id                             = (known after apply)
+      + region                               = "us-east-1"
+      + tags                                 = {
+          + "Environment" = "dev"
+          + "ManagedBy"   = "terraform"
+          + "Name"        = "nexpay-dev-vpc"
+          + "Project"     = "nexpay"
+        }
+      + tags_all                             = {
+          + "Environment" = "dev"
+          + "ManagedBy"   = "terraform"
+          + "Name"        = "nexpay-dev-vpc"
+          + "Project"     = "nexpay"
+        }
+    }
+
+  # module.vpc.aws_vpc_endpoint.interface["ec2"] will be created
+  + resource "aws_vpc_endpoint" "interface" {
+      + arn                   = (known after apply)
+      + cidr_blocks           = (known after apply)
+      + dns_entry             = (known after apply)
+      + id                    = (known after apply)
+      + ip_address_type       = (known after apply)
+      + network_interface_ids = (known after apply)
+      + owner_id              = (known after apply)
+      + policy                = (known after apply)
+      + prefix_list_id        = (known after apply)
+      + private_dns_enabled   = true
+      + region                = "us-east-1"
+      + requester_managed     = (known after apply)
+      + route_table_ids       = (known after apply)
+      + security_group_ids    = (known after apply)
+      + service_name          = "com.amazonaws.us-east-1.ec2"
+      + service_region        = (known after apply)
+      + state                 = (known after apply)
+      + subnet_ids            = (known after apply)
+      + tags                  = {
+          + "Environment" = "dev"
+          + "ManagedBy"   = "Terraform"
+          + "Name"        = "nexpay-dev-vpce-ec2"
+          + "Project"     = "nexpay"
+          + "Service"     = "ec2"
+        }
+      + tags_all              = {
+          + "Environment" = "dev"
+          + "ManagedBy"   = "Terraform"
+          + "Name"        = "nexpay-dev-vpce-ec2"
+          + "Project"     = "nexpay"
+          + "Service"     = "ec2"
+        }
+      + vpc_endpoint_type     = "Interface"
+      + vpc_id                = (known after apply)
+
+      + dns_options (known after apply)
+
+      + subnet_configuration (known after apply)
+    }
+
+  # module.vpc.aws_vpc_endpoint.interface["ecr.api"] will be created
+  + resource "aws_vpc_endpoint" "interface" {
+      + arn                   = (known after apply)
+      + cidr_blocks           = (known after apply)
+      + dns_entry             = (known after apply)
+      + id                    = (known after apply)
+      + ip_address_type       = (known after apply)
+      + network_interface_ids = (known after apply)
+      + owner_id              = (known after apply)
+      + policy                = (known after apply)
+      + prefix_list_id        = (known after apply)
+      + private_dns_enabled   = true
+      + region                = "us-east-1"
+      + requester_managed     = (known after apply)
+      + route_table_ids       = (known after apply)
+      + security_group_ids    = (known after apply)
+      + service_name          = "com.amazonaws.us-east-1.ecr.api"
+      + service_region        = (known after apply)
+      + state                 = (known after apply)
+      + subnet_ids            = (known after apply)
+      + tags                  = {
+          + "Environment" = "dev"
+          + "ManagedBy"   = "Terraform"
+          + "Name"        = "nexpay-dev-vpce-ecr-api"
+          + "Project"     = "nexpay"
+          + "Service"     = "ecr.api"
+        }
+      + tags_all              = {
+          + "Environment" = "dev"
+          + "ManagedBy"   = "Terraform"
+          + "Name"        = "nexpay-dev-vpce-ecr-api"
+          + "Project"     = "nexpay"
+          + "Service"     = "ecr.api"
+        }
+      + vpc_endpoint_type     = "Interface"
+      + vpc_id                = (known after apply)
+
+      + dns_options (known after apply)
+
+      + subnet_configuration (known after apply)
+    }
+
+  # module.vpc.aws_vpc_endpoint.interface["ecr.dkr"] will be created
+  + resource "aws_vpc_endpoint" "interface" {
+      + arn                   = (known after apply)
+      + cidr_blocks           = (known after apply)
+      + dns_entry             = (known after apply)
+      + id                    = (known after apply)
+      + ip_address_type       = (known after apply)
+      + network_interface_ids = (known after apply)
+      + owner_id              = (known after apply)
+      + policy                = (known after apply)
+      + prefix_list_id        = (known after apply)
+      + private_dns_enabled   = true
+      + region                = "us-east-1"
+      + requester_managed     = (known after apply)
+      + route_table_ids       = (known after apply)
+      + security_group_ids    = (known after apply)
+      + service_name          = "com.amazonaws.us-east-1.ecr.dkr"
+      + service_region        = (known after apply)
+      + state                 = (known after apply)
+      + subnet_ids            = (known after apply)
+      + tags                  = {
+          + "Environment" = "dev"
+          + "ManagedBy"   = "Terraform"
+          + "Name"        = "nexpay-dev-vpce-ecr-dkr"
+          + "Project"     = "nexpay"
+          + "Service"     = "ecr.dkr"
+        }
+      + tags_all              = {
+          + "Environment" = "dev"
+          + "ManagedBy"   = "Terraform"
+          + "Name"        = "nexpay-dev-vpce-ecr-dkr"
+          + "Project"     = "nexpay"
+          + "Service"     = "ecr.dkr"
+        }
+      + vpc_endpoint_type     = "Interface"
+      + vpc_id                = (known after apply)
+
+      + dns_options (known after apply)
+
+      + subnet_configuration (known after apply)
+    }
+
+  # module.vpc.aws_vpc_endpoint.interface["logs"] will be created
+  + resource "aws_vpc_endpoint" "interface" {
+      + arn                   = (known after apply)
+      + cidr_blocks           = (known after apply)
+      + dns_entry             = (known after apply)
+      + id                    = (known after apply)
+      + ip_address_type       = (known after apply)
+      + network_interface_ids = (known after apply)
+      + owner_id              = (known after apply)
+      + policy                = (known after apply)
+      + prefix_list_id        = (known after apply)
+      + private_dns_enabled   = true
+      + region                = "us-east-1"
+      + requester_managed     = (known after apply)
+      + route_table_ids       = (known after apply)
+      + security_group_ids    = (known after apply)
+      + service_name          = "com.amazonaws.us-east-1.logs"
+      + service_region        = (known after apply)
+      + state                 = (known after apply)
+      + subnet_ids            = (known after apply)
+      + tags                  = {
+          + "Environment" = "dev"
+          + "ManagedBy"   = "Terraform"
+          + "Name"        = "nexpay-dev-vpce-logs"
+          + "Project"     = "nexpay"
+          + "Service"     = "logs"
+        }
+      + tags_all              = {
+          + "Environment" = "dev"
+          + "ManagedBy"   = "Terraform"
+          + "Name"        = "nexpay-dev-vpce-logs"
+          + "Project"     = "nexpay"
+          + "Service"     = "logs"
+        }
+      + vpc_endpoint_type     = "Interface"
+      + vpc_id                = (known after apply)
+
+      + dns_options (known after apply)
+
+      + subnet_configuration (known after apply)
+    }
+
+  # module.vpc.aws_vpc_endpoint.interface["sts"] will be created
+  + resource "aws_vpc_endpoint" "interface" {
+      + arn                   = (known after apply)
+      + cidr_blocks           = (known after apply)
+      + dns_entry             = (known after apply)
+      + id                    = (known after apply)
+      + ip_address_type       = (known after apply)
+      + network_interface_ids = (known after apply)
+      + owner_id              = (known after apply)
+      + policy                = (known after apply)
+      + prefix_list_id        = (known after apply)
+      + private_dns_enabled   = true
+      + region                = "us-east-1"
+      + requester_managed     = (known after apply)
+      + route_table_ids       = (known after apply)
+      + security_group_ids    = (known after apply)
+      + service_name          = "com.amazonaws.us-east-1.sts"
+      + service_region        = (known after apply)
+      + state                 = (known after apply)
+      + subnet_ids            = (known after apply)
+      + tags                  = {
+          + "Environment" = "dev"
+          + "ManagedBy"   = "Terraform"
+          + "Name"        = "nexpay-dev-vpce-sts"
+          + "Project"     = "nexpay"
+          + "Service"     = "sts"
+        }
+      + tags_all              = {
+          + "Environment" = "dev"
+          + "ManagedBy"   = "Terraform"
+          + "Name"        = "nexpay-dev-vpce-sts"
+          + "Project"     = "nexpay"
+          + "Service"     = "sts"
+        }
+      + vpc_endpoint_type     = "Interface"
+      + vpc_id                = (known after apply)
+
+      + dns_options (known after apply)
+
+      + subnet_configuration (known after apply)
+    }
+
+  # module.vpc.aws_vpc_endpoint.sqs will be created
+  + resource "aws_vpc_endpoint" "sqs" {
+      + arn                   = (known after apply)
+      + cidr_blocks           = (known after apply)
+      + dns_entry             = (known after apply)
+      + id                    = (known after apply)
+      + ip_address_type       = (known after apply)
+      + network_interface_ids = (known after apply)
+      + owner_id              = (known after apply)
+      + policy                = (known after apply)
+      + prefix_list_id        = (known after apply)
+      + private_dns_enabled   = true
+      + region                = "us-east-1"
+      + requester_managed     = (known after apply)
+      + route_table_ids       = (known after apply)
+      + security_group_ids    = (known after apply)
+      + service_name          = "com.amazonaws.us-east-1.sqs"
+      + service_region        = (known after apply)
+      + state                 = (known after apply)
+      + subnet_ids            = (known after apply)
+      + tags                  = {
+          + "Environment" = "dev"
+          + "ManagedBy"   = "terraform"
+          + "Name"        = "nexpay-dev-vpce-sqs"
+          + "Project"     = "nexpay"
+        }
+      + tags_all              = {
+          + "Environment" = "dev"
+          + "ManagedBy"   = "terraform"
+          + "Name"        = "nexpay-dev-vpce-sqs"
+          + "Project"     = "nexpay"
+        }
+      + vpc_endpoint_type     = "Interface"
+      + vpc_id                = (known after apply)
+
+      + dns_options (known after apply)
+
+      + subnet_configuration (known after apply)
+    }
+
+  # module.vpc.aws_vpc_security_group_ingress_rule.rds_postgres["private_app_a"] will be created
+  + resource "aws_vpc_security_group_ingress_rule" "rds_postgres" {
+      + arn                    = (known after apply)
+      + cidr_ipv4              = "10.0.11.0/24"
+      + description            = "PostgreSQL access from private_app_a"
+      + from_port              = 5432
+      + id                     = (known after apply)
+      + ip_protocol            = "tcp"
+      + region                 = "us-east-1"
+      + security_group_id      = (known after apply)
+      + security_group_rule_id = (known after apply)
+      + tags_all               = {}
+      + to_port                = 5432
+    }
+
+  # module.vpc.aws_vpc_security_group_ingress_rule.rds_postgres["private_app_b"] will be created
+  + resource "aws_vpc_security_group_ingress_rule" "rds_postgres" {
+      + arn                    = (known after apply)
+      + cidr_ipv4              = "10.0.12.0/24"
+      + description            = "PostgreSQL access from private_app_b"
+      + from_port              = 5432
+      + id                     = (known after apply)
+      + ip_protocol            = "tcp"
+      + region                 = "us-east-1"
+      + security_group_id      = (known after apply)
+      + security_group_rule_id = (known after apply)
+      + tags_all               = {}
+      + to_port                = 5432
+    }
+
+  # module.vpc.aws_vpc_security_group_ingress_rule.redis["private_app_a"] will be created
+  + resource "aws_vpc_security_group_ingress_rule" "redis" {
+      + arn                    = (known after apply)
+      + cidr_ipv4              = "10.0.11.0/24"
+      + description            = "Redis access from private_app_a"
+      + from_port              = 6379
+      + id                     = (known after apply)
+      + ip_protocol            = "tcp"
+      + region                 = "us-east-1"
+      + security_group_id      = (known after apply)
+      + security_group_rule_id = (known after apply)
+      + tags_all               = {}
+      + to_port                = 6379
+    }
+
+  # module.vpc.aws_vpc_security_group_ingress_rule.redis["private_app_b"] will be created
+  + resource "aws_vpc_security_group_ingress_rule" "redis" {
+      + arn                    = (known after apply)
+      + cidr_ipv4              = "10.0.12.0/24"
+      + description            = "Redis access from private_app_b"
+      + from_port              = 6379
+      + id                     = (known after apply)
+      + ip_protocol            = "tcp"
+      + region                 = "us-east-1"
+      + security_group_id      = (known after apply)
+      + security_group_rule_id = (known after apply)
+      + tags_all               = {}
+      + to_port                = 6379
+    }
+
+  # module.vpc.aws_vpc_security_group_ingress_rule.vpce_https["private_app_a"] will be created
+  + resource "aws_vpc_security_group_ingress_rule" "vpce_https" {
+      + arn                    = (known after apply)
+      + cidr_ipv4              = "10.0.11.0/24"
+      + description            = "HTTPS access to VPC Endpoints from private_app_a"
+      + from_port              = 443
+      + id                     = (known after apply)
+      + ip_protocol            = "tcp"
+      + region                 = "us-east-1"
+      + security_group_id      = (known after apply)
+      + security_group_rule_id = (known after apply)
+      + tags_all               = {}
+      + to_port                = 443
+    }
+
+  # module.vpc.aws_vpc_security_group_ingress_rule.vpce_https["private_app_b"] will be created
+  + resource "aws_vpc_security_group_ingress_rule" "vpce_https" {
+      + arn                    = (known after apply)
+      + cidr_ipv4              = "10.0.12.0/24"
+      + description            = "HTTPS access to VPC Endpoints from private_app_b"
+      + from_port              = 443
+      + id                     = (known after apply)
+      + ip_protocol            = "tcp"
+      + region                 = "us-east-1"
+      + security_group_id      = (known after apply)
+      + security_group_rule_id = (known after apply)
+      + tags_all               = {}
+      + to_port                = 443
+    }
+
+Plan: 92 to add, 0 to change, 0 to destroy.
+
+Changes to Outputs:
+  + eks_cluster_name         = "nexpay-dev-eks"
+  + payment_events_topic_arn = (known after apply)
+  + rds_endpoint             = (known after apply)
+  + vpc_id                   = (known after apply)
+
+─────────────────────────────────────────────────────────────────────────────
+
+Note: You didn't use the -out option to save this plan, so Terraform can't
+guarantee to take exactly these actions if you run "terraform apply" now.

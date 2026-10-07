@@ -1,0 +1,23 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: nexpay-dev
+
+resources:
+- ../../base
+
+namePrefix: dev-
+
+images:
+- name: nexpay-payments
+  newName: nexpay-payments
+  newTag: latest
+
+
+replicas:
+- count: 2
+  name: dev-payments
+labels:
+- includeSelectors: true
+  pairs:
+    environment: dev
